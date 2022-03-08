@@ -1,0 +1,1 @@
+INSERT INTO roles (role_id,name,description,activate,create_at,update_at) VALUES (1,"ADMIN","Es un administrador",true,NOW(),NOW());
