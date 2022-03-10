@@ -113,38 +113,38 @@ CREATE TABLE public.system_options (
 
 ALTER SEQUENCE public.system_options_system_option_id_seq OWNED BY public.system_options.system_option_id;
 
-CREATE TABLE public.roles (
-                role_id INTEGER NOT NULL,
+CREATE TABLE public.level_access (
+                level_access_id INTEGER NOT NULL,
                 name VARCHAR(256) NOT NULL,
                 description NVARCHAR,
                 activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT roles_pk PRIMARY KEY (role_id)
+                CONSTRAINT level_access_pk PRIMARY KEY (level_access_id)
 );
 
 
-CREATE SEQUENCE public.permissions_by_role_permission_by_role_id_seq;
+CREATE SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq;
 
-CREATE TABLE public.permissions_by_role (
-                permission_by_role_id INTEGER NOT NULL DEFAULT nextval('public.permissions_by_role_permission_by_role_id_seq'),
-                role_id INTEGER NOT NULL,
+CREATE TABLE public.permissions_by_level_access (
+                permission_by_role_id INTEGER NOT NULL DEFAULT nextval('public.permissions_by_level_access_permission_by_role_id_seq'),
+                level_access_id INTEGER NOT NULL,
                 system_option_id INTEGER NOT NULL,
                 allow_permission BOOLEAN NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
-                CONSTRAINT permissions_by_role_pk PRIMARY KEY (permission_by_role_id)
+                CONSTRAINT permissions_by_level_access_pk PRIMARY KEY (permission_by_role_id)
 );
 
 
-ALTER SEQUENCE public.permissions_by_role_permission_by_role_id_seq OWNED BY public.permissions_by_role.permission_by_role_id;
+ALTER SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq OWNED BY public.permissions_by_level_access.permission_by_role_id;
 
 CREATE SEQUENCE public.users_user_id_seq;
 
 CREATE TABLE public.users (
                 user_id INTEGER NOT NULL DEFAULT nextval('public.users_user_id_seq'),
                 email VARCHAR(256) NOT NULL,
-                role_id INTEGER NOT NULL,
+                level_access_id INTEGER NOT NULL,
                 activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
@@ -184,40 +184,40 @@ CREATE TABLE public.persons (
 
 ALTER SEQUENCE public.persons_person_id_seq OWNED BY public.persons.person_id;
 
-CREATE SEQUENCE public.participant_evaluation_peariod_headers_participant_audit_id_seq;
+CREATE SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849;
 
 CREATE TABLE public.participant_evaluation_peariod_headers (
-                participant_audit_id INTEGER NOT NULL DEFAULT nextval('public.participant_evaluation_peariod_headers_participant_audit_id_seq'),
+                participant_evaluation_period_id INTEGER NOT NULL DEFAULT nextval('public.participant_evaluation_peariod_headers_participant_evaluatio849'),
                 committee_audio_url VARCHAR,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 person_id INTEGER NOT NULL,
-                CONSTRAINT participant_evaluation_peariod_headers_pk PRIMARY KEY (participant_audit_id)
+                CONSTRAINT participant_evaluation_peariod_headers_pk PRIMARY KEY (participant_evaluation_period_id)
 );
 
 
-ALTER SEQUENCE public.participant_evaluation_peariod_headers_participant_audit_id_seq OWNED BY public.participant_evaluation_peariod_headers.participant_audit_id;
+ALTER SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849 OWNED BY public.participant_evaluation_peariod_headers.participant_evaluation_period_id;
 
-CREATE SEQUENCE public.participant_evaluation_peariod_headers_details_audit_partici277;
+CREATE SEQUENCE public.participant_evaluation_peariod_headers_details_participant_e334;
 
 CREATE TABLE public.participant_evaluation_peariod_headers_details (
-                audit_participant_detail_id INTEGER NOT NULL DEFAULT nextval('public.participant_evaluation_peariod_headers_details_audit_partici277'),
-                participant_audit_id INTEGER NOT NULL,
+                participant_evaluation_period_detail_id INTEGER NOT NULL DEFAULT nextval('public.participant_evaluation_peariod_headers_details_participant_e334'),
+                participant_evaluation_period_header_id INTEGER NOT NULL,
                 attribute_id VARCHAR NOT NULL,
                 total_value INTEGER NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
-                CONSTRAINT participant_evaluation_peariod_headers_details_pk PRIMARY KEY (audit_participant_detail_id)
+                CONSTRAINT participant_evaluation_peariod_headers_details_pk PRIMARY KEY (participant_evaluation_period_detail_id)
 );
 
 
-ALTER SEQUENCE public.participant_evaluation_peariod_headers_details_audit_partici277 OWNED BY public.participant_evaluation_peariod_headers_details.audit_participant_detail_id;
+ALTER SEQUENCE public.participant_evaluation_peariod_headers_details_participant_e334 OWNED BY public.participant_evaluation_peariod_headers_details.participant_evaluation_period_detail_id;
 
 CREATE SEQUENCE public.meetings_meeting_id_seq;
 
 CREATE TABLE public.meetings (
                 meeting_id INTEGER NOT NULL DEFAULT nextval('public.meetings_meeting_id_seq'),
-                created_by INTEGER NOT NULL,
+                created_by_user_id INTEGER NOT NULL,
                 platform_id INTEGER NOT NULL,
                 start_date TIMESTAMP NOT NULL,
                 subject VARCHAR(2048) NOT NULL,
@@ -269,7 +269,7 @@ CREATE SEQUENCE public.participant_values_header_participant_value_header_id_seq
 
 CREATE TABLE public.participant_values_header (
                 participant_value_header_id INTEGER NOT NULL DEFAULT nextval('public.participant_values_header_participant_value_header_id_seq'),
-                evaluate_by_id INTEGER NOT NULL,
+                evaluate_by_participant_id INTEGER NOT NULL,
                 participant_to_evaluate_id INTEGER NOT NULL,
                 general_feedback VARCHAR,
                 create_at TIMESTAMP NOT NULL,
@@ -285,7 +285,7 @@ CREATE SEQUENCE public.attributes_to_evaluate_by_participant_attribute_to_evalua
 CREATE TABLE public.attributes_to_evaluate_by_participant (
                 attribute_to_evaluate_by_participant_id INTEGER NOT NULL DEFAULT nextval('public.attributes_to_evaluate_by_participant_attribute_to_evaluate_192'),
                 attribute_id VARCHAR NOT NULL,
-                participant_id INTEGER NOT NULL,
+                participant_to_be_evaluate_id INTEGER NOT NULL,
                 activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
@@ -300,7 +300,7 @@ CREATE SEQUENCE public.permissions_to_evalute_participants_attributes_evaluator_
 CREATE TABLE public.permissions_to_evalute_participants_attributes (
                 evaluator_participant_by_attribute_id INTEGER NOT NULL DEFAULT nextval('public.permissions_to_evalute_participants_attributes_evaluator_par99'),
                 attribute_to_evaluate_by_participant_id INTEGER NOT NULL,
-                participant_id INTEGER NOT NULL,
+                evaluator_participant_id INTEGER NOT NULL,
                 allow_permission BOOLEAN DEFAULT true NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
@@ -318,7 +318,7 @@ CREATE TABLE public.participant_atrribute_values_details (
                 evaluator_participant_by_attribute_id INTEGER NOT NULL,
                 value_range_id INTEGER NOT NULL,
                 attribute_feedbak VARCHAR,
-                participant_audit_id INTEGER,
+                participant_evaluation_period_id INTEGER,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT participant_atrribute_values_details_pk PRIMARY KEY (participant_value_detail_id)
@@ -331,7 +331,7 @@ CREATE SEQUENCE public.permissions_to_evalute_meeting_attribute_attribute_with_p
 
 CREATE TABLE public.permissions_to_evalute_meeting_attribute (
                 attribute_with_permissions_participant_id INTEGER NOT NULL DEFAULT nextval('public.permissions_to_evalute_meeting_attribute_attribute_with_perm947'),
-                participant_id INTEGER NOT NULL,
+                participant_evaluator_id INTEGER NOT NULL,
                 meeting_attribute_to_evaluate_id INTEGER NOT NULL,
                 allow_permission BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
@@ -346,7 +346,7 @@ CREATE SEQUENCE public.meeting_value_headers_meeting_value_header_id_seq;
 
 CREATE TABLE public.meeting_value_headers (
                 meeting_value_header_id INTEGER NOT NULL DEFAULT nextval('public.meeting_value_headers_meeting_value_header_id_seq'),
-                participant_id INTEGER NOT NULL,
+                participant_evaluator_id INTEGER NOT NULL,
                 general_feedback VARCHAR,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
@@ -361,7 +361,7 @@ CREATE TABLE public.meeting_value_details (
                 meeting_value_header_id INTEGER NOT NULL,
                 value_range_id INTEGER NOT NULL,
                 attribute_feedbak NVARCHAR,
-                attribute_with_permissions_participant_id INTEGER NOT NULL,
+                participant_with_permissions_to_eval_meeting_attribute_id INTEGER NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 CONSTRAINT meeting_value_details_pk PRIMARY KEY (meeting_value_detail_id)
@@ -456,7 +456,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.permissions_by_role ADD CONSTRAINT modules_permissions_by_role_fk
+ALTER TABLE public.permissions_by_level_access ADD CONSTRAINT modules_permissions_by_role_fk
 FOREIGN KEY (system_option_id)
 REFERENCES public.system_options (system_option_id)
 ON DELETE NO ACTION
@@ -471,15 +471,15 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.users ADD CONSTRAINT rol_id_users_fk
-FOREIGN KEY (role_id)
-REFERENCES public.roles (role_id)
+FOREIGN KEY (level_access_id)
+REFERENCES public.level_access (level_access_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.permissions_by_role ADD CONSTRAINT rol_id_permissions_by_role_fk
-FOREIGN KEY (role_id)
-REFERENCES public.roles (role_id)
+ALTER TABLE public.permissions_by_level_access ADD CONSTRAINT rol_id_permissions_by_role_fk
+FOREIGN KEY (level_access_id)
+REFERENCES public.level_access (level_access_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -492,7 +492,7 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.meetings ADD CONSTRAINT users_meetings_fk
-FOREIGN KEY (created_by)
+FOREIGN KEY (created_by_user_id)
 REFERENCES public.users (user_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
@@ -527,15 +527,15 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.participant_evaluation_peariod_headers_details ADD CONSTRAINT audit_participants_header_audit_participant_details_fk
-FOREIGN KEY (participant_audit_id)
-REFERENCES public.participant_evaluation_peariod_headers (participant_audit_id)
+FOREIGN KEY (participant_evaluation_period_header_id)
+REFERENCES public.participant_evaluation_peariod_headers (participant_evaluation_period_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT audit_participants_header_participant_values_atrribute_detai521
-FOREIGN KEY (participant_audit_id)
-REFERENCES public.participant_evaluation_peariod_headers (participant_audit_id)
+FOREIGN KEY (participant_evaluation_period_id)
+REFERENCES public.participant_evaluation_peariod_headers (participant_evaluation_period_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -569,28 +569,28 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.meeting_value_headers ADD CONSTRAINT participants_meeting_value_header_fk
-FOREIGN KEY (participant_id)
+FOREIGN KEY (participant_evaluator_id)
 REFERENCES public.participants (participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.permissions_to_evalute_meeting_attribute ADD CONSTRAINT participants_permissions_to_evalute_meeting_attribute_fk
-FOREIGN KEY (participant_id)
+FOREIGN KEY (participant_evaluator_id)
 REFERENCES public.participants (participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.attributes_to_evaluate_by_participant ADD CONSTRAINT participants_attributes_to_evaluate_by_participant_fk
-FOREIGN KEY (participant_id)
+FOREIGN KEY (participant_to_be_evaluate_id)
 REFERENCES public.participants (participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.permissions_to_evalute_participants_attributes ADD CONSTRAINT participants_permissions_to_evalute_participant_attribute_fk
-FOREIGN KEY (participant_id)
+FOREIGN KEY (evaluator_participant_id)
 REFERENCES public.participants (participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
@@ -604,7 +604,7 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.participant_values_header ADD CONSTRAINT participants_participant_values_header_fk1
-FOREIGN KEY (evaluate_by_id)
+FOREIGN KEY (evaluate_by_participant_id)
 REFERENCES public.participants (participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
@@ -632,7 +632,7 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.meeting_value_details ADD CONSTRAINT permissions_to_evalute_meeting_attribute_meeting_value_detai673
-FOREIGN KEY (attribute_with_permissions_participant_id)
+FOREIGN KEY (participant_with_permissions_to_eval_meeting_attribute_id)
 REFERENCES public.permissions_to_evalute_meeting_attribute (attribute_with_permissions_participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION

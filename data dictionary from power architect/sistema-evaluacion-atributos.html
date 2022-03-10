@@ -122,6 +122,9 @@
 <a href="#global_settings">global_settings</a>
 </li>
 <li>
+<a href="#level_access">level_access</a>
+</li>
+<li>
 <a href="#meeting_platforms">meeting_platforms</a>
 </li>
 <li>
@@ -149,7 +152,7 @@
 <a href="#participants">participants</a>
 </li>
 <li>
-<a href="#permissions_by_role">permissions_by_role</a>
+<a href="#permissions_by_level_access">permissions_by_level_access</a>
 </li>
 <li>
 <a href="#permissions_by_user">permissions_by_user</a>
@@ -162,9 +165,6 @@
 </li>
 <li>
 <a href="#persons">persons</a>
-</li>
-<li>
-<a href="#roles">roles</a>
 </li>
 <li>
 <a href="#system_auditable_process">system_auditable_process</a>
@@ -426,9 +426,9 @@
               </td><td class="tdTableDefinition">attribute_id</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_id
+<td class="tdTableDefinition">participant_to_be_evaluate_id
                 &nbsp;(<a href="#participants">FK</a>)
-              </td><td class="tdTableDefinition">participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">participant_to_be_evaluate_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -446,7 +446,7 @@
 <li>
 <a href="#attribute">attribute</a> through (attribute_id)</li>
 <li>
-<a href="#participants">participants</a> through (participant_id)</li>
+<a href="#participants">participants</a> through (participant_to_be_evaluate_id)</li>
 </ul>
 <p class="subTitle">Referenced By</p>
 <ul>
@@ -576,6 +576,47 @@
 <div class="references"></div>
 </div>
 <div class="tableNameHeading">
+<h1>level_access<a name="level_access"></a>
+</h1>
+<h2>
+      (Physical Name: level_access)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">level_access_id (PK)</td><td class="tdTableDefinition">level_access_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(256)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">NVARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">Referenced By</p>
+<ul>
+<li>
+<a href="#users">users</a> referencing (level_access_id)</li>
+<li>
+<a href="#permissions_by_level_access">permissions_by_level_access</a> referencing (level_access_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
 <h1>meeting_platforms<a name="meeting_platforms"></a>
 </h1>
 <h2>
@@ -640,9 +681,9 @@
 <td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">NVARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">attribute_with_permissions_participant_id
+<td class="tdTableDefinition">participant_with_permissions_to_eval_meeting_attribute_id
                 &nbsp;(<a href="#permissions_to_evalute_meeting_attribute">FK</a>)
-              </td><td class="tdTableDefinition">attribute_with_permissions_participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">participant_with_permissions_to_eval_meeting_attribute_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -659,7 +700,7 @@
 <li>
 <a href="#meeting_value_headers">meeting_value_headers</a> through (meeting_value_header_id)</li>
 <li>
-<a href="#permissions_to_evalute_meeting_attribute">permissions_to_evalute_meeting_attribute</a> through (attribute_with_permissions_participant_id)</li>
+<a href="#permissions_to_evalute_meeting_attribute">permissions_to_evalute_meeting_attribute</a> through (participant_with_permissions_to_eval_meeting_attribute_id)</li>
 </ul>
 </div>
 </div>
@@ -679,9 +720,9 @@
 <td class="tdTableDefinition">meeting_value_header_id (PK)</td><td class="tdTableDefinition">meeting_value_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_id
+<td class="tdTableDefinition">participant_evaluator_id
                 &nbsp;(<a href="#participants">FK</a>)
-              </td><td class="tdTableDefinition">participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">participant_evaluator_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">general_feedback</td><td class="tdTableDefinition">general_feedback</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
@@ -697,7 +738,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#participants">participants</a> through (participant_id)</li>
+<a href="#participants">participants</a> through (participant_evaluator_id)</li>
 </ul>
 <p class="subTitle">Referenced By</p>
 <ul>
@@ -722,9 +763,9 @@
 <td class="tdTableDefinition">meeting_id (PK)</td><td class="tdTableDefinition">meeting_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">created_by
+<td class="tdTableDefinition">created_by_user_id
                 &nbsp;(<a href="#users">FK</a>)
-              </td><td class="tdTableDefinition">created_by</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">created_by_user_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">platform_id
@@ -759,7 +800,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#users">users</a> through (created_by)</li>
+<a href="#users">users</a> through (created_by_user_id)</li>
 <li>
 <a href="#meetings">meetings</a> through (previus_meeting)</li>
 <li>
@@ -810,9 +851,9 @@
 <td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_audit_id
+<td class="tdTableDefinition">participant_evaluation_period_id
                 &nbsp;(<a href="#participant_evaluation_peariod_headers">FK</a>)
-              </td><td class="tdTableDefinition">participant_audit_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+              </td><td class="tdTableDefinition">participant_evaluation_period_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -831,7 +872,7 @@
 <li>
 <a href="#participant_values_header">participant_values_header</a> through (participant_value_header_id)</li>
 <li>
-<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> through (participant_audit_id)</li>
+<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> through (participant_evaluation_period_id)</li>
 </ul>
 </div>
 </div>
@@ -848,7 +889,7 @@
 <td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_audit_id (PK)</td><td class="tdTableDefinition">participant_audit_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">participant_evaluation_period_id (PK)</td><td class="tdTableDefinition">participant_evaluation_period_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">committee_audio_url</td><td class="tdTableDefinition">committee_audio_url</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
@@ -874,9 +915,9 @@
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#participant_evaluation_peariod_headers_details">participant_evaluation_peariod_headers_details</a> referencing (participant_audit_id)</li>
+<a href="#participant_evaluation_peariod_headers_details">participant_evaluation_peariod_headers_details</a> referencing (participant_evaluation_period_id)</li>
 <li>
-<a href="#participant_atrribute_values_details">participant_atrribute_values_details</a> referencing (participant_audit_id)</li>
+<a href="#participant_atrribute_values_details">participant_atrribute_values_details</a> referencing (participant_evaluation_period_id)</li>
 </ul>
 </div>
 </div>
@@ -893,12 +934,12 @@
 <td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">audit_participant_detail_id (PK)</td><td class="tdTableDefinition">audit_participant_detail_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">participant_evaluation_period_detail_id (PK)</td><td class="tdTableDefinition">participant_evaluation_period_detail_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_audit_id
+<td class="tdTableDefinition">participant_evaluation_period_header_id
                 &nbsp;(<a href="#participant_evaluation_peariod_headers">FK</a>)
-              </td><td class="tdTableDefinition">participant_audit_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">participant_evaluation_period_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">attribute_id
@@ -921,7 +962,7 @@
 <li>
 <a href="#attribute">attribute</a> through (attribute_id)</li>
 <li>
-<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> through (participant_audit_id)</li>
+<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> through (participant_evaluation_period_header_id)</li>
 </ul>
 </div>
 </div>
@@ -941,9 +982,9 @@
 <td class="tdTableDefinition">participant_value_header_id (PK)</td><td class="tdTableDefinition">participant_value_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">evaluate_by_id
+<td class="tdTableDefinition">evaluate_by_participant_id
                 &nbsp;(<a href="#participants">FK</a>)
-              </td><td class="tdTableDefinition">evaluate_by_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">evaluate_by_participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">participant_to_evaluate_id
@@ -966,7 +1007,7 @@
 <li>
 <a href="#participants">participants</a> through (participant_to_evaluate_id)</li>
 <li>
-<a href="#participants">participants</a> through (evaluate_by_id)</li>
+<a href="#participants">participants</a> through (evaluate_by_participant_id)</li>
 </ul>
 <p class="subTitle">Referenced By</p>
 <ul>
@@ -1045,10 +1086,10 @@
 </div>
 </div>
 <div class="tableNameHeading">
-<h1>permissions_by_role<a name="permissions_by_role"></a>
+<h1>permissions_by_level_access<a name="permissions_by_level_access"></a>
 </h1>
 <h2>
-      (Physical Name: permissions_by_role)
+      (Physical Name: permissions_by_level_access)
       </h2>
 </div>
 <div class="table">
@@ -1060,9 +1101,9 @@
 <td class="tdTableDefinition">permission_by_role_id (PK)</td><td class="tdTableDefinition">permission_by_role_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">role_id
-                &nbsp;(<a href="#roles">FK</a>)
-              </td><td class="tdTableDefinition">role_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">level_access_id
+                &nbsp;(<a href="#level_access">FK</a>)
+              </td><td class="tdTableDefinition">level_access_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">system_option_id
@@ -1083,7 +1124,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#roles">roles</a> through (role_id)</li>
+<a href="#level_access">level_access</a> through (level_access_id)</li>
 <li>
 <a href="#system_options">system_options</a> through (system_option_id)</li>
 </ul>
@@ -1150,9 +1191,9 @@
 <td class="tdTableDefinition">attribute_with_permissions_participant_id (PK)</td><td class="tdTableDefinition">attribute_with_permissions_participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_id
+<td class="tdTableDefinition">participant_evaluator_id
                 &nbsp;(<a href="#participants">FK</a>)
-              </td><td class="tdTableDefinition">participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">participant_evaluator_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">meeting_attribute_to_evaluate_id
@@ -1173,7 +1214,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#participants">participants</a> through (participant_id)</li>
+<a href="#participants">participants</a> through (participant_evaluator_id)</li>
 <li>
 <a href="#attribute_to_evaluate_by_meeting">attribute_to_evaluate_by_meeting</a> through (meeting_attribute_to_evaluate_id)</li>
 </ul>
@@ -1205,9 +1246,9 @@
               </td><td class="tdTableDefinition">attribute_to_evaluate_by_participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">participant_id
+<td class="tdTableDefinition">evaluator_participant_id
                 &nbsp;(<a href="#participants">FK</a>)
-              </td><td class="tdTableDefinition">participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+              </td><td class="tdTableDefinition">evaluator_participant_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">allow_permission</td><td class="tdTableDefinition">allow_permission</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -1223,7 +1264,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#participants">participants</a> through (participant_id)</li>
+<a href="#participants">participants</a> through (evaluator_participant_id)</li>
 <li>
 <a href="#attributes_to_evaluate_by_participant">attributes_to_evaluate_by_participant</a> through (attribute_to_evaluate_by_participant_id)</li>
 </ul>
@@ -1283,47 +1324,6 @@
 <a href="#participants">participants</a> referencing (person_id)</li>
 <li>
 <a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> referencing (person_id)</li>
-</ul>
-</div>
-</div>
-<div class="tableNameHeading">
-<h1>roles<a name="roles"></a>
-</h1>
-<h2>
-      (Physical Name: roles)
-      </h2>
-</div>
-<div class="table">
-<table class="tableDefinition" width="100%">
-<tr>
-<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">role_id (PK)</td><td class="tdTableDefinition">role_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(256)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">NVARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-</table>
-<div class="references">
-<p class="subTitle">Referenced By</p>
-<ul>
-<li>
-<a href="#users">users</a> referencing (role_id)</li>
-<li>
-<a href="#permissions_by_role">permissions_by_role</a> referencing (role_id)</li>
 </ul>
 </div>
 </div>
@@ -1401,7 +1401,7 @@
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#permissions_by_role">permissions_by_role</a> referencing (system_option_id)</li>
+<a href="#permissions_by_level_access">permissions_by_level_access</a> referencing (system_option_id)</li>
 <li>
 <a href="#permissions_by_user">permissions_by_user</a> referencing (system_option_id)</li>
 </ul>
@@ -1426,9 +1426,9 @@
 <td class="tdTableDefinition">email</td><td class="tdTableDefinition">email</td><td class="tdTableDefinition">VARCHAR(256)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">role_id
-                &nbsp;(<a href="#roles">FK</a>)
-              </td><td class="tdTableDefinition">role_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">level_access_id
+                &nbsp;(<a href="#level_access">FK</a>)
+              </td><td class="tdTableDefinition">level_access_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -1444,7 +1444,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#roles">roles</a> through (role_id)</li>
+<a href="#level_access">level_access</a> through (level_access_id)</li>
 </ul>
 <p class="subTitle">Referenced By</p>
 <ul>
