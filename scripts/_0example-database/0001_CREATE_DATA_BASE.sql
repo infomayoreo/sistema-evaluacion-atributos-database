@@ -1,21 +1,31 @@
 
+CREATE SEQUENCE public.profiencies_values_proficiency_value_id_seq;
+
 CREATE TABLE public.profiencies_values (
-                proficiency_value_id INTEGER NOT NULL,
-                name_data_source VARCHAR(100) NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                update_at TIMESTAMP NOT NULL,
+                proficiency_value_id INTEGER NOT NULL DEFAULT nextval('public.profiencies_values_proficiency_value_id_seq'),
+                name VARCHAR(100) NOT NULL,
                 description VARCHAR,
                 numeric_value INTEGER NOT NULL,
                 color VARCHAR(10),
                 activate BOOLEAN DEFAULT true NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
                 CONSTRAINT profiencies_values_pk PRIMARY KEY (proficiency_value_id)
 );
 
 
+ALTER SEQUENCE public.profiencies_values_proficiency_value_id_seq OWNED BY public.profiencies_values.proficiency_value_id;
+
+CREATE UNIQUE INDEX profiencies_values_idx
+ ON public.profiencies_values
+ ( name );
+
+CREATE SEQUENCE public.proficiencies_profieciency_id_seq;
+
 CREATE TABLE public.proficiencies (
-                proficiency_id INTEGER NOT NULL,
+                proficiency_id INTEGER NOT NULL DEFAULT nextval('public.proficiencies_profieciency_id_seq'),
                 name_data_source VARCHAR(100) NOT NULL,
-                description VARCHAR NOT NULL,
+                description VARCHAR,
                 activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
@@ -23,30 +33,52 @@ CREATE TABLE public.proficiencies (
 );
 
 
+ALTER SEQUENCE public.proficiencies_profieciency_id_seq OWNED BY public.proficiencies.proficiency_id;
+
+CREATE UNIQUE INDEX proficiencies_idx
+ ON public.proficiencies
+ ( name_data_source );
+
+CREATE SEQUENCE public.proficiencies_ranges_proviciency_range_id_seq;
+
 CREATE TABLE public.proficiencies_ranges (
-                proficiency_range_id INTEGER NOT NULL,
+                proficiency_range_id INTEGER NOT NULL DEFAULT nextval('public.proficiencies_ranges_proviciency_range_id_seq'),
                 proficiency_value_id INTEGER NOT NULL,
                 proficiency_id INTEGER NOT NULL,
+                update_at TIMESTAMP NOT NULL,
+                create_at TIMESTAMP NOT NULL,
                 CONSTRAINT proficiencies_ranges_pk PRIMARY KEY (proficiency_range_id)
 );
 
+
+ALTER SEQUENCE public.proficiencies_ranges_proviciency_range_id_seq OWNED BY public.proficiencies_ranges.proficiency_range_id;
+
+CREATE UNIQUE INDEX proficiencies_ranges_idx
+ ON public.proficiencies_ranges
+ ( proficiency_value_id, proficiency_id );
 
 CREATE SEQUENCE public.evaluation_type_evaluation_type_id_seq;
 
 CREATE TABLE public.evaluation_type (
                 evaluation_type_id INTEGER NOT NULL DEFAULT nextval('public.evaluation_type_evaluation_type_id_seq'),
-                update_at TIMESTAMP NOT NULL,
-                create_at TIMESTAMP NOT NULL,
                 name VARCHAR(256) NOT NULL,
-                description VARCHAR NOT NULL,
+                description VARCHAR,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
                 CONSTRAINT evaluation_type_pk PRIMARY KEY (evaluation_type_id)
 );
 
 
 ALTER SEQUENCE public.evaluation_type_evaluation_type_id_seq OWNED BY public.evaluation_type.evaluation_type_id;
 
+CREATE UNIQUE INDEX evaluation_type_idx
+ ON public.evaluation_type
+ ( name );
+
+CREATE SEQUENCE public.profile_types_profile_type_id_seq;
+
 CREATE TABLE public.profile_types (
-                profile_type_id INTEGER NOT NULL,
+                profile_type_id INTEGER NOT NULL DEFAULT nextval('public.profile_types_profile_type_id_seq'),
                 name VARCHAR(256) NOT NULL,
                 description NVARCHAR,
                 update_at TIMESTAMP NOT NULL,
@@ -57,21 +89,30 @@ CREATE TABLE public.profile_types (
 COMMENT ON TABLE public.profile_types IS 'name of the profiles in funtion of the attributes';
 
 
+ALTER SEQUENCE public.profile_types_profile_type_id_seq OWNED BY public.profile_types.profile_type_id;
+
+CREATE UNIQUE INDEX profile_types_idx
+ ON public.profile_types
+ ( name );
+
 CREATE TABLE public.system_auditable_process (
                 system_auditable_process_id INTEGER NOT NULL,
                 name VARCHAR(256) NOT NULL,
                 description NVARCHAR,
-                activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT system_auditable_process_pk PRIMARY KEY (system_auditable_process_id)
 );
 
 
+CREATE UNIQUE INDEX system_auditable_process_idx
+ ON public.system_auditable_process
+ ( name );
+
 CREATE TABLE public.data_source (
                 data_source_id INTEGER NOT NULL,
                 name_data_source VARCHAR NOT NULL,
-                description VARCHAR NOT NULL,
+                description VARCHAR,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 url VARCHAR NOT NULL,
@@ -101,6 +142,10 @@ CREATE TABLE public.meeting_platforms (
 );
 
 
+CREATE UNIQUE INDEX meeting_platforms_idx
+ ON public.meeting_platforms
+ ( name );
+
 CREATE TABLE public.attribute_values (
                 value_id INTEGER NOT NULL,
                 name VARCHAR(256) NOT NULL,
@@ -113,12 +158,16 @@ CREATE TABLE public.attribute_values (
 );
 
 
+CREATE UNIQUE INDEX attribute_values_idx
+ ON public.attribute_values
+ ( name );
+
 CREATE SEQUENCE public.attribute_type_attribute_type_id_seq;
 
 CREATE TABLE public.attribute_type (
                 attribute_type_id INTEGER NOT NULL DEFAULT nextval('public.attribute_type_attribute_type_id_seq'),
                 name VARCHAR(256) NOT NULL,
-                description VARCHAR NOT NULL,
+                description VARCHAR,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT attribute_type_pk PRIMARY KEY (attribute_type_id)
@@ -126,6 +175,10 @@ CREATE TABLE public.attribute_type (
 
 
 ALTER SEQUENCE public.attribute_type_attribute_type_id_seq OWNED BY public.attribute_type.attribute_type_id;
+
+CREATE UNIQUE INDEX attribute_type_idx
+ ON public.attribute_type
+ ( name );
 
 CREATE SEQUENCE public.attribute_attribute_id_seq;
 
@@ -142,6 +195,10 @@ CREATE TABLE public.attribute (
 
 
 ALTER SEQUENCE public.attribute_attribute_id_seq OWNED BY public.attribute.attribute_id;
+
+CREATE INDEX attribute_idx
+ ON public.attribute
+ ( attribute_type_id, name );
 
 CREATE TABLE public.attribute_profiles (
                 attribute_profile_id INTEGER NOT NULL,
@@ -164,16 +221,20 @@ CREATE TABLE public.attribute_ranges (
                 attribute_id VARCHAR NOT NULL,
                 value_id INTEGER NOT NULL,
                 description NVARCHAR,
+                update_at TIMESTAMP NOT NULL,
+                create_at TIMESTAMP NOT NULL,
                 CONSTRAINT attribute_ranges_pk PRIMARY KEY (range_id)
 );
 
 
 ALTER SEQUENCE public.attribute_ranges_range_id_seq OWNED BY public.attribute_ranges.range_id;
 
-CREATE SEQUENCE public.system_options_system_option_id_seq;
+CREATE UNIQUE INDEX attribute_ranges_idx
+ ON public.attribute_ranges
+ ( attribute_id, value_id );
 
 CREATE TABLE public.system_options (
-                system_option_id INTEGER NOT NULL DEFAULT nextval('public.system_options_system_option_id_seq'),
+                system_option_id INTEGER NOT NULL,
                 name VARCHAR(256) NOT NULL,
                 description NVARCHAR,
                 activate BOOLEAN DEFAULT true NOT NULL,
@@ -183,7 +244,9 @@ CREATE TABLE public.system_options (
 );
 
 
-ALTER SEQUENCE public.system_options_system_option_id_seq OWNED BY public.system_options.system_option_id;
+CREATE UNIQUE INDEX system_options_idx
+ ON public.system_options
+ ( name );
 
 CREATE TABLE public.level_access (
                 level_access_id INTEGER NOT NULL,
@@ -195,6 +258,10 @@ CREATE TABLE public.level_access (
                 CONSTRAINT level_access_pk PRIMARY KEY (level_access_id)
 );
 
+
+CREATE UNIQUE INDEX level_access_idx
+ ON public.level_access
+ ( name );
 
 CREATE SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq;
 
@@ -211,6 +278,10 @@ CREATE TABLE public.permissions_by_level_access (
 
 ALTER SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq OWNED BY public.permissions_by_level_access.permission_by_role_id;
 
+CREATE UNIQUE INDEX permissions_by_level_access_idx
+ ON public.permissions_by_level_access
+ ( level_access_id, system_option_id );
+
 CREATE SEQUENCE public.users_user_id_seq;
 
 CREATE TABLE public.users (
@@ -226,20 +297,28 @@ CREATE TABLE public.users (
 
 ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
+CREATE UNIQUE INDEX users_idx
+ ON public.users
+ ( email );
+
+CREATE SEQUENCE public.audit_users_audit_user_id_seq;
+
 CREATE TABLE public.audit_users (
-                audit_user_id INTEGER NOT NULL,
+                audit_user_id INTEGER NOT NULL DEFAULT nextval('public.audit_users_audit_user_id_seq'),
                 system_auditable_process_id INTEGER NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                update_at TIMESTAMP NOT NULL,
                 user_id INTEGER NOT NULL,
                 at_table VARCHAR(100),
                 at_column VARCHAR(100),
                 old_value VARCHAR(100),
                 new_value VARCHAR(100),
                 data_type VARCHAR(100),
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
                 CONSTRAINT audit_users_pk PRIMARY KEY (audit_user_id)
 );
 
+
+ALTER SEQUENCE public.audit_users_audit_user_id_seq OWNED BY public.audit_users.audit_user_id;
 
 CREATE SEQUENCE public.persons_person_id_seq;
 
@@ -256,16 +335,28 @@ CREATE TABLE public.persons (
 
 ALTER SEQUENCE public.persons_person_id_seq OWNED BY public.persons.person_id;
 
+CREATE UNIQUE INDEX persons_idx
+ ON public.persons
+ ( user_id );
+
+CREATE SEQUENCE public.person_proficiency_person_proficiency_id_seq;
+
 CREATE TABLE public.person_proficiency (
-                person_proficiency_id INTEGER NOT NULL,
+                person_proficiency_id INTEGER NOT NULL DEFAULT nextval('public.person_proficiency_person_proficiency_id_seq'),
                 person_id INTEGER NOT NULL,
                 proficiency_range_id INTEGER NOT NULL,
+                update_at TIMESTAMP NOT NULL,
+                create_at TIMESTAMP NOT NULL,
                 CONSTRAINT person_proficiency_pk PRIMARY KEY (person_proficiency_id)
 );
 
 
+ALTER SEQUENCE public.person_proficiency_person_proficiency_id_seq OWNED BY public.person_proficiency.person_proficiency_id;
+
+CREATE SEQUENCE public.evaluation_comments_evaluation_comment_id_seq;
+
 CREATE TABLE public.evaluation_comments (
-                evaluation_comment_id INTEGER NOT NULL,
+                evaluation_comment_id INTEGER NOT NULL DEFAULT nextval('public.evaluation_comments_evaluation_comment_id_seq'),
                 person_to_evaluate_id INTEGER NOT NULL,
                 evaluator_user_id INTEGER NOT NULL,
                 create_at TIMESTAMP NOT NULL,
@@ -273,6 +364,8 @@ CREATE TABLE public.evaluation_comments (
                 CONSTRAINT evaluation_comments_pk PRIMARY KEY (evaluation_comment_id)
 );
 
+
+ALTER SEQUENCE public.evaluation_comments_evaluation_comment_id_seq OWNED BY public.evaluation_comments.evaluation_comment_id;
 
 CREATE SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849;
 
@@ -313,32 +406,32 @@ CREATE SEQUENCE public.person_values_header_participant_value_header_id_seq;
 CREATE TABLE public.person_values_header (
                 person_values_header_id INTEGER NOT NULL DEFAULT nextval('public.person_values_header_participant_value_header_id_seq'),
                 general_feedback VARCHAR,
-                create_at TIMESTAMP NOT NULL,
-                update_at TIMESTAMP NOT NULL,
                 evaluator_user_id INTEGER NOT NULL,
                 person_to_evaluate_id INTEGER NOT NULL,
                 evaluation_type_id INTEGER NOT NULL,
                 meeting_id INTEGER,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
                 CONSTRAINT person_values_header_pk PRIMARY KEY (person_values_header_id)
 );
 
 
 ALTER SEQUENCE public.person_values_header_participant_value_header_id_seq OWNED BY public.person_values_header.person_values_header_id;
 
-CREATE SEQUENCE public.participant_atrribute_values_details_participant_value_detai366;
+CREATE SEQUENCE public.person_values_details_participant_value_detail_id_seq;
 
-CREATE TABLE public.participant_atrribute_values_details (
-                participant_value_detail_id INTEGER NOT NULL DEFAULT nextval('public.participant_atrribute_values_details_participant_value_detai366'),
+CREATE TABLE public.person_values_details (
+                person_value_detail_id INTEGER NOT NULL DEFAULT nextval('public.person_values_details_participant_value_detail_id_seq'),
                 person_values_header_id INTEGER NOT NULL,
                 value_range_id INTEGER NOT NULL,
                 attribute_feedbak VARCHAR,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT participant_atrribute_values_details_pk PRIMARY KEY (participant_value_detail_id)
+                CONSTRAINT person_values_details_pk PRIMARY KEY (person_value_detail_id)
 );
 
 
-ALTER SEQUENCE public.participant_atrribute_values_details_participant_value_detai366 OWNED BY public.participant_atrribute_values_details.participant_value_detail_id;
+ALTER SEQUENCE public.person_values_details_participant_value_detail_id_seq OWNED BY public.person_values_details.person_value_detail_id;
 
 CREATE SEQUENCE public.participants_participant_id_seq;
 
@@ -389,6 +482,10 @@ CREATE TABLE public.permissions_by_user (
                 CONSTRAINT permissions_by_user_pk PRIMARY KEY (permission_by_user_id)
 );
 
+
+CREATE UNIQUE INDEX permissions_by_user_idx
+ ON public.permissions_by_user
+ ( user_id, system_option_id );
 
 ALTER TABLE public.proficiencies_ranges ADD CONSTRAINT profiencies_values_proficiencies_ranges_fk
 FOREIGN KEY (proficiency_value_id)
@@ -481,7 +578,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT attribute_ranges_participant_values_atrribute_details_fk
+ALTER TABLE public.person_values_details ADD CONSTRAINT attribute_ranges_participant_values_atrribute_details_fk
 FOREIGN KEY (value_range_id)
 REFERENCES public.attribute_ranges (range_id)
 ON DELETE NO ACTION
@@ -621,7 +718,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT participant_values_header_participant_values_atrribute_detai199
+ALTER TABLE public.person_values_details ADD CONSTRAINT participant_values_header_participant_values_atrribute_detai199
 FOREIGN KEY (person_values_header_id)
 REFERENCES public.person_values_header (person_values_header_id)
 ON DELETE NO ACTION
