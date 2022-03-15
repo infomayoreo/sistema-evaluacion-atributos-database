@@ -1,4 +1,36 @@
 
+CREATE TABLE public.profiencies_values (
+                proficiency_value_id INTEGER NOT NULL,
+                name_data_source VARCHAR(100) NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
+                description VARCHAR,
+                numeric_value INTEGER NOT NULL,
+                color VARCHAR(10),
+                activate BOOLEAN DEFAULT true NOT NULL,
+                CONSTRAINT profiencies_values_pk PRIMARY KEY (proficiency_value_id)
+);
+
+
+CREATE TABLE public.proficiencies (
+                proficiency_id INTEGER NOT NULL,
+                name_data_source VARCHAR(100) NOT NULL,
+                description VARCHAR NOT NULL,
+                activate BOOLEAN DEFAULT true NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
+                CONSTRAINT proficiencies_pk PRIMARY KEY (proficiency_id)
+);
+
+
+CREATE TABLE public.proficiencies_ranges (
+                proficiency_range_id INTEGER NOT NULL,
+                proficiency_value_id INTEGER NOT NULL,
+                proficiency_id INTEGER NOT NULL,
+                CONSTRAINT proficiencies_ranges_pk PRIMARY KEY (proficiency_range_id)
+);
+
+
 CREATE SEQUENCE public.evaluation_type_evaluation_type_id_seq;
 
 CREATE TABLE public.evaluation_type (
@@ -74,7 +106,7 @@ CREATE TABLE public.attribute_values (
                 name VARCHAR(256) NOT NULL,
                 numeric_value INTEGER NOT NULL,
                 description NVARCHAR,
-                color VARCHAR,
+                color VARCHAR(10),
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT attribute_values_pk PRIMARY KEY (value_id)
@@ -224,6 +256,14 @@ CREATE TABLE public.persons (
 
 ALTER SEQUENCE public.persons_person_id_seq OWNED BY public.persons.person_id;
 
+CREATE TABLE public.person_proficiency (
+                person_proficiency_id INTEGER NOT NULL,
+                person_id INTEGER NOT NULL,
+                proficiency_range_id INTEGER NOT NULL,
+                CONSTRAINT person_proficiency_pk PRIMARY KEY (person_proficiency_id)
+);
+
+
 CREATE TABLE public.evaluation_comments (
                 evaluation_comment_id INTEGER NOT NULL,
                 person_to_evaluate_id INTEGER NOT NULL,
@@ -349,6 +389,27 @@ CREATE TABLE public.permissions_by_user (
                 CONSTRAINT permissions_by_user_pk PRIMARY KEY (permission_by_user_id)
 );
 
+
+ALTER TABLE public.proficiencies_ranges ADD CONSTRAINT profiencies_values_proficiencies_ranges_fk
+FOREIGN KEY (proficiency_value_id)
+REFERENCES public.profiencies_values (proficiency_value_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.proficiencies_ranges ADD CONSTRAINT proficiencies_proficiencies_ranges_fk
+FOREIGN KEY (proficiency_id)
+REFERENCES public.proficiencies (proficiency_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.person_proficiency ADD CONSTRAINT proficiencies_ranges_person_proficiency_fk
+FOREIGN KEY (proficiency_range_id)
+REFERENCES public.proficiencies_ranges (proficiency_range_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
 
 ALTER TABLE public.person_values_header ADD CONSTRAINT evaluation_type_person_values_header_fk
 FOREIGN KEY (evaluation_type_id)
@@ -527,6 +588,13 @@ NOT DEFERRABLE;
 
 ALTER TABLE public.evaluation_comments ADD CONSTRAINT persons_evaluation_comments_fk
 FOREIGN KEY (person_to_evaluate_id)
+REFERENCES public.persons (person_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.person_proficiency ADD CONSTRAINT persons_person_proficiency_fk
+FOREIGN KEY (person_id)
 REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION

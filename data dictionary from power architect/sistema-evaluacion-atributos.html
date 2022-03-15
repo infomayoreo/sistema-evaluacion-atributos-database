@@ -155,10 +155,22 @@
 <a href="#permissions_by_user">permissions_by_user</a>
 </li>
 <li>
+<a href="#person_proficiency">person_proficiency</a>
+</li>
+<li>
 <a href="#person_values_header">person_values_header</a>
 </li>
 <li>
 <a href="#persons">persons</a>
+</li>
+<li>
+<a href="#proficiencies">proficiencies</a>
+</li>
+<li>
+<a href="#proficiencies_ranges">proficiencies_ranges</a>
+</li>
+<li>
+<a href="#profiencies_values">profiencies_values</a>
 </li>
 <li>
 <a href="#profile_types">profile_types</a>
@@ -373,7 +385,7 @@
 <td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">NVARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">color</td><td class="tdTableDefinition">color</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+<td class="tdTableDefinition">color</td><td class="tdTableDefinition">color</td><td class="tdTableDefinition">VARCHAR(10)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -1051,6 +1063,42 @@
 </div>
 </div>
 <div class="tableNameHeading">
+<h1>person_proficiency<a name="person_proficiency"></a>
+</h1>
+<h2>
+      (Physical Name: person_proficiency)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">person_proficiency_id (PK)</td><td class="tdTableDefinition">person_proficiency_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">person_id
+                &nbsp;(<a href="#persons">FK</a>)
+              </td><td class="tdTableDefinition">person_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">proficiency_range_id
+                &nbsp;(<a href="#proficiencies_ranges">FK</a>)
+              </td><td class="tdTableDefinition">proficiency_range_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">References</p>
+<ul>
+<li>
+<a href="#persons">persons</a> through (person_id)</li>
+<li>
+<a href="#proficiencies_ranges">proficiencies_ranges</a> through (proficiency_range_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
 <h1>person_values_header<a name="person_values_header"></a>
 </h1>
 <h2>
@@ -1167,6 +1215,133 @@
 <a href="#person_values_header">person_values_header</a> referencing (person_id)</li>
 <li>
 <a href="#evaluation_comments">evaluation_comments</a> referencing (person_id)</li>
+<li>
+<a href="#person_proficiency">person_proficiency</a> referencing (person_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
+<h1>proficiencies<a name="proficiencies"></a>
+</h1>
+<h2>
+      (Physical Name: proficiencies)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">proficiency_id (PK)</td><td class="tdTableDefinition">proficiency_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">name_data_source</td><td class="tdTableDefinition">name_data_source</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">Referenced By</p>
+<ul>
+<li>
+<a href="#proficiencies_ranges">proficiencies_ranges</a> referencing (proficiency_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
+<h1>proficiencies_ranges<a name="proficiencies_ranges"></a>
+</h1>
+<h2>
+      (Physical Name: proficiencies_ranges)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">proficiency_range_id (PK)</td><td class="tdTableDefinition">proficiency_range_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">proficiency_value_id
+                &nbsp;(<a href="#profiencies_values">FK</a>)
+              </td><td class="tdTableDefinition">proficiency_value_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">proficiency_id
+                &nbsp;(<a href="#proficiencies">FK</a>)
+              </td><td class="tdTableDefinition">proficiency_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">References</p>
+<ul>
+<li>
+<a href="#proficiencies">proficiencies</a> through (proficiency_id)</li>
+<li>
+<a href="#profiencies_values">profiencies_values</a> through (proficiency_value_id)</li>
+</ul>
+<p class="subTitle">Referenced By</p>
+<ul>
+<li>
+<a href="#person_proficiency">person_proficiency</a> referencing (proficiency_range_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
+<h1>profiencies_values<a name="profiencies_values"></a>
+</h1>
+<h2>
+      (Physical Name: profiencies_values)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">proficiency_value_id (PK)</td><td class="tdTableDefinition">proficiency_value_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">name_data_source</td><td class="tdTableDefinition">name_data_source</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">numeric_value</td><td class="tdTableDefinition">numeric_value</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">color</td><td class="tdTableDefinition">color</td><td class="tdTableDefinition">VARCHAR(10)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">Referenced By</p>
+<ul>
+<li>
+<a href="#proficiencies_ranges">proficiencies_ranges</a> referencing (proficiency_value_id)</li>
 </ul>
 </div>
 </div>
