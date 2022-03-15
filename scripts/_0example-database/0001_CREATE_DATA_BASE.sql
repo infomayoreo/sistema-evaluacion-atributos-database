@@ -1,4 +1,30 @@
 
+CREATE SEQUENCE public.evaluation_type_evaluation_type_id_seq;
+
+CREATE TABLE public.evaluation_type (
+                evaluation_type_id INTEGER NOT NULL DEFAULT nextval('public.evaluation_type_evaluation_type_id_seq'),
+                update_at TIMESTAMP NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                name VARCHAR(256) NOT NULL,
+                description VARCHAR NOT NULL,
+                CONSTRAINT evaluation_type_pk PRIMARY KEY (evaluation_type_id)
+);
+
+
+ALTER SEQUENCE public.evaluation_type_evaluation_type_id_seq OWNED BY public.evaluation_type.evaluation_type_id;
+
+CREATE TABLE public.profile_types (
+                profile_type_id INTEGER NOT NULL,
+                name VARCHAR(256) NOT NULL,
+                description NVARCHAR,
+                update_at TIMESTAMP NOT NULL,
+                activate BOOLEAN DEFAULT true NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                CONSTRAINT profile_types_pk PRIMARY KEY (profile_type_id)
+);
+COMMENT ON TABLE public.profile_types IS 'name of the profiles in funtion of the attributes';
+
+
 CREATE TABLE public.system_auditable_process (
                 system_auditable_process_id INTEGER NOT NULL,
                 name VARCHAR(256) NOT NULL,
@@ -85,6 +111,20 @@ CREATE TABLE public.attribute (
 
 ALTER SEQUENCE public.attribute_attribute_id_seq OWNED BY public.attribute.attribute_id;
 
+CREATE TABLE public.attribute_profiles (
+                attribute_profile_id INTEGER NOT NULL,
+                profile_type_id INTEGER NOT NULL,
+                attribute_id VARCHAR NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
+                CONSTRAINT attribute_profiles_pk PRIMARY KEY (attribute_profile_id)
+);
+
+
+CREATE UNIQUE INDEX attribute_profiles_idx
+ ON public.attribute_profiles
+ ( profile_type_id, attribute_id );
+
 CREATE SEQUENCE public.attribute_ranges_range_id_seq;
 
 CREATE TABLE public.attribute_ranges (
@@ -160,11 +200,11 @@ CREATE TABLE public.audit_users (
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 user_id INTEGER NOT NULL,
-                at_table VARCHAR(100) NOT NULL,
-                at_column VARCHAR(100) NOT NULL,
-                old_value VARCHAR(100) NOT NULL,
-                new_value VARCHAR(100) NOT NULL,
-                data_type VARCHAR(100) NOT NULL,
+                at_table VARCHAR(100),
+                at_column VARCHAR(100),
+                old_value VARCHAR(100),
+                new_value VARCHAR(100),
+                data_type VARCHAR(100),
                 CONSTRAINT audit_users_pk PRIMARY KEY (audit_user_id)
 );
 
@@ -184,6 +224,16 @@ CREATE TABLE public.persons (
 
 ALTER SEQUENCE public.persons_person_id_seq OWNED BY public.persons.person_id;
 
+CREATE TABLE public.evaluation_comments (
+                evaluation_comment_id INTEGER NOT NULL,
+                person_to_evaluate_id INTEGER NOT NULL,
+                evaluator_user_id INTEGER NOT NULL,
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
+                CONSTRAINT evaluation_comments_pk PRIMARY KEY (evaluation_comment_id)
+);
+
+
 CREATE SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849;
 
 CREATE TABLE public.participant_evaluation_peariod_headers (
@@ -191,27 +241,13 @@ CREATE TABLE public.participant_evaluation_peariod_headers (
                 committee_audio_url VARCHAR,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
-                person_id INTEGER NOT NULL,
+                person_to_evaluate_id INTEGER NOT NULL,
+                evaluator_user_id INTEGER NOT NULL,
                 CONSTRAINT participant_evaluation_peariod_headers_pk PRIMARY KEY (participant_evaluation_period_id)
 );
 
 
 ALTER SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849 OWNED BY public.participant_evaluation_peariod_headers.participant_evaluation_period_id;
-
-CREATE SEQUENCE public.participant_evaluation_peariod_headers_details_participant_e334;
-
-CREATE TABLE public.participant_evaluation_peariod_headers_details (
-                participant_evaluation_period_detail_id INTEGER NOT NULL DEFAULT nextval('public.participant_evaluation_peariod_headers_details_participant_e334'),
-                participant_evaluation_period_header_id INTEGER NOT NULL,
-                attribute_id VARCHAR NOT NULL,
-                total_value INTEGER NOT NULL,
-                update_at TIMESTAMP NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                CONSTRAINT participant_evaluation_peariod_headers_details_pk PRIMARY KEY (participant_evaluation_period_detail_id)
-);
-
-
-ALTER SEQUENCE public.participant_evaluation_peariod_headers_details_participant_e334 OWNED BY public.participant_evaluation_peariod_headers_details.participant_evaluation_period_detail_id;
 
 CREATE SEQUENCE public.meetings_meeting_id_seq;
 
@@ -232,93 +268,30 @@ CREATE TABLE public.meetings (
 
 ALTER SEQUENCE public.meetings_meeting_id_seq OWNED BY public.meetings.meeting_id;
 
-CREATE SEQUENCE public.attribute_to_evaluate_by_meeting_meeting_attribute_to_evalua731;
+CREATE SEQUENCE public.person_values_header_participant_value_header_id_seq;
 
-CREATE TABLE public.attribute_to_evaluate_by_meeting (
-                meeting_attribute_to_evaluate_id INTEGER NOT NULL DEFAULT nextval('public.attribute_to_evaluate_by_meeting_meeting_attribute_to_evalua731'),
-                meeting_id INTEGER NOT NULL,
-                attribute_id VARCHAR NOT NULL,
-                activate BOOLEAN DEFAULT true NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                update_at TIMESTAMP NOT NULL,
-                CONSTRAINT attribute_to_evaluate_by_meeting_pk PRIMARY KEY (meeting_attribute_to_evaluate_id)
-);
-
-
-ALTER SEQUENCE public.attribute_to_evaluate_by_meeting_meeting_attribute_to_evalua731 OWNED BY public.attribute_to_evaluate_by_meeting.meeting_attribute_to_evaluate_id;
-
-CREATE SEQUENCE public.participants_participant_id_seq;
-
-CREATE TABLE public.participants (
-                participant_id INTEGER NOT NULL DEFAULT nextval('public.participants_participant_id_seq'),
-                meeting_id INTEGER NOT NULL,
-                person_id INTEGER NOT NULL,
-                can_evalute_meet BOOLEAN DEFAULT true NOT NULL,
-                can_evaluate_participants BOOLEAN DEFAULT true NOT NULL,
-                can_be_evaluate BOOLEAN DEFAULT true NOT NULL,
-                deleted BOOLEAN DEFAULT false NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                update_at TIMESTAMP NOT NULL,
-                CONSTRAINT participants_pk PRIMARY KEY (participant_id)
-);
-
-
-ALTER SEQUENCE public.participants_participant_id_seq OWNED BY public.participants.participant_id;
-
-CREATE SEQUENCE public.participant_values_header_participant_value_header_id_seq;
-
-CREATE TABLE public.participant_values_header (
-                participant_value_header_id INTEGER NOT NULL DEFAULT nextval('public.participant_values_header_participant_value_header_id_seq'),
-                evaluate_by_participant_id INTEGER NOT NULL,
-                participant_to_evaluate_id INTEGER NOT NULL,
+CREATE TABLE public.person_values_header (
+                person_values_header_id INTEGER NOT NULL DEFAULT nextval('public.person_values_header_participant_value_header_id_seq'),
                 general_feedback VARCHAR,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT participant_values_header_pk PRIMARY KEY (participant_value_header_id)
+                evaluator_user_id INTEGER NOT NULL,
+                person_to_evaluate_id INTEGER NOT NULL,
+                evaluation_type_id INTEGER NOT NULL,
+                meeting_id INTEGER,
+                CONSTRAINT person_values_header_pk PRIMARY KEY (person_values_header_id)
 );
 
 
-ALTER SEQUENCE public.participant_values_header_participant_value_header_id_seq OWNED BY public.participant_values_header.participant_value_header_id;
-
-CREATE SEQUENCE public.attributes_to_evaluate_by_participant_attribute_to_evaluate_192;
-
-CREATE TABLE public.attributes_to_evaluate_by_participant (
-                attribute_to_evaluate_by_participant_id INTEGER NOT NULL DEFAULT nextval('public.attributes_to_evaluate_by_participant_attribute_to_evaluate_192'),
-                attribute_id VARCHAR NOT NULL,
-                participant_to_be_evaluate_id INTEGER NOT NULL,
-                activate BOOLEAN DEFAULT true NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                update_at TIMESTAMP NOT NULL,
-                CONSTRAINT attributes_to_evaluate_by_participant_pk PRIMARY KEY (attribute_to_evaluate_by_participant_id)
-);
-
-
-ALTER SEQUENCE public.attributes_to_evaluate_by_participant_attribute_to_evaluate_192 OWNED BY public.attributes_to_evaluate_by_participant.attribute_to_evaluate_by_participant_id;
-
-CREATE SEQUENCE public.permissions_to_evalute_participants_attributes_evaluator_par99;
-
-CREATE TABLE public.permissions_to_evalute_participants_attributes (
-                evaluator_participant_by_attribute_id INTEGER NOT NULL DEFAULT nextval('public.permissions_to_evalute_participants_attributes_evaluator_par99'),
-                attribute_to_evaluate_by_participant_id INTEGER NOT NULL,
-                evaluator_participant_id INTEGER NOT NULL,
-                allow_permission BOOLEAN DEFAULT true NOT NULL,
-                update_at TIMESTAMP NOT NULL,
-                create_at TIMESTAMP NOT NULL,
-                CONSTRAINT permissions_to_evalute_participants_attributes_pk PRIMARY KEY (evaluator_participant_by_attribute_id)
-);
-
-
-ALTER SEQUENCE public.permissions_to_evalute_participants_attributes_evaluator_par99 OWNED BY public.permissions_to_evalute_participants_attributes.evaluator_participant_by_attribute_id;
+ALTER SEQUENCE public.person_values_header_participant_value_header_id_seq OWNED BY public.person_values_header.person_values_header_id;
 
 CREATE SEQUENCE public.participant_atrribute_values_details_participant_value_detai366;
 
 CREATE TABLE public.participant_atrribute_values_details (
                 participant_value_detail_id INTEGER NOT NULL DEFAULT nextval('public.participant_atrribute_values_details_participant_value_detai366'),
-                participant_value_header_id INTEGER NOT NULL,
-                evaluator_participant_by_attribute_id INTEGER NOT NULL,
+                person_values_header_id INTEGER NOT NULL,
                 value_range_id INTEGER NOT NULL,
                 attribute_feedbak VARCHAR,
-                participant_evaluation_period_id INTEGER,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT participant_atrribute_values_details_pk PRIMARY KEY (participant_value_detail_id)
@@ -327,20 +300,19 @@ CREATE TABLE public.participant_atrribute_values_details (
 
 ALTER SEQUENCE public.participant_atrribute_values_details_participant_value_detai366 OWNED BY public.participant_atrribute_values_details.participant_value_detail_id;
 
-CREATE SEQUENCE public.permissions_to_evalute_meeting_attribute_attribute_with_perm947;
+CREATE SEQUENCE public.participants_participant_id_seq;
 
-CREATE TABLE public.permissions_to_evalute_meeting_attribute (
-                attribute_with_permissions_participant_id INTEGER NOT NULL DEFAULT nextval('public.permissions_to_evalute_meeting_attribute_attribute_with_perm947'),
-                participant_evaluator_id INTEGER NOT NULL,
-                meeting_attribute_to_evaluate_id INTEGER NOT NULL,
-                allow_permission BOOLEAN DEFAULT true NOT NULL,
+CREATE TABLE public.participants (
+                participant_id INTEGER NOT NULL DEFAULT nextval('public.participants_participant_id_seq'),
+                meeting_id INTEGER NOT NULL,
+                person_id INTEGER NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT permissions_to_evalute_meeting_attribute_pk PRIMARY KEY (attribute_with_permissions_participant_id)
+                CONSTRAINT participants_pk PRIMARY KEY (participant_id)
 );
 
 
-ALTER SEQUENCE public.permissions_to_evalute_meeting_attribute_attribute_with_perm947 OWNED BY public.permissions_to_evalute_meeting_attribute.attribute_with_permissions_participant_id;
+ALTER SEQUENCE public.participants_participant_id_seq OWNED BY public.participants.participant_id;
 
 CREATE SEQUENCE public.meeting_value_headers_meeting_value_header_id_seq;
 
@@ -361,7 +333,6 @@ CREATE TABLE public.meeting_value_details (
                 meeting_value_header_id INTEGER NOT NULL,
                 value_range_id INTEGER NOT NULL,
                 attribute_feedbak NVARCHAR,
-                participant_with_permissions_to_eval_meeting_attribute_id INTEGER NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 CONSTRAINT meeting_value_details_pk PRIMARY KEY (meeting_value_detail_id)
@@ -378,6 +349,20 @@ CREATE TABLE public.permissions_by_user (
                 CONSTRAINT permissions_by_user_pk PRIMARY KEY (permission_by_user_id)
 );
 
+
+ALTER TABLE public.person_values_header ADD CONSTRAINT evaluation_type_person_values_header_fk
+FOREIGN KEY (evaluation_type_id)
+REFERENCES public.evaluation_type (evaluation_type_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.attribute_profiles ADD CONSTRAINT profile_types_attribute_profiles_fk
+FOREIGN KEY (profile_type_id)
+REFERENCES public.profile_types (profile_type_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
 
 ALTER TABLE public.audit_users ADD CONSTRAINT system_operations_audit_users_fk
 FOREIGN KEY (system_auditable_process_id)
@@ -421,21 +406,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.attribute_to_evaluate_by_meeting ADD CONSTRAINT attribute_attribute_to_evalute_by_meeting_fk
-FOREIGN KEY (attribute_id)
-REFERENCES public.attribute (attribute_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.attributes_to_evaluate_by_participant ADD CONSTRAINT attribute_attributes_to_evaluate_by_participant_fk
-FOREIGN KEY (attribute_id)
-REFERENCES public.attribute (attribute_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.participant_evaluation_peariod_headers_details ADD CONSTRAINT attribute_audit_participant_details_fk
+ALTER TABLE public.attribute_profiles ADD CONSTRAINT attribute_attribute_profiles_fk
 FOREIGN KEY (attribute_id)
 REFERENCES public.attribute (attribute_id)
 ON DELETE NO ACTION
@@ -512,6 +483,27 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
+ALTER TABLE public.person_values_header ADD CONSTRAINT users_person_values_header_fk
+FOREIGN KEY (evaluator_user_id)
+REFERENCES public.users (user_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.evaluation_comments ADD CONSTRAINT users_evaluation_comments_fk
+FOREIGN KEY (evaluator_user_id)
+REFERENCES public.users (user_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.participant_evaluation_peariod_headers ADD CONSTRAINT users_participant_evaluation_peariod_headers_fk
+FOREIGN KEY (evaluator_user_id)
+REFERENCES public.users (user_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
 ALTER TABLE public.participants ADD CONSTRAINT persons_participants_fk
 FOREIGN KEY (person_id)
 REFERENCES public.persons (person_id)
@@ -520,34 +512,27 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.participant_evaluation_peariod_headers ADD CONSTRAINT persons_audit_participants_header_fk
-FOREIGN KEY (person_id)
+FOREIGN KEY (person_to_evaluate_id)
 REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.participant_evaluation_peariod_headers_details ADD CONSTRAINT audit_participants_header_audit_participant_details_fk
-FOREIGN KEY (participant_evaluation_period_header_id)
-REFERENCES public.participant_evaluation_peariod_headers (participant_evaluation_period_id)
+ALTER TABLE public.person_values_header ADD CONSTRAINT persons_person_values_header_fk
+FOREIGN KEY (person_to_evaluate_id)
+REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT audit_participants_header_participant_values_atrribute_detai521
-FOREIGN KEY (participant_evaluation_period_id)
-REFERENCES public.participant_evaluation_peariod_headers (participant_evaluation_period_id)
+ALTER TABLE public.evaluation_comments ADD CONSTRAINT persons_evaluation_comments_fk
+FOREIGN KEY (person_to_evaluate_id)
+REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.participants ADD CONSTRAINT meetings_participants_fk
-FOREIGN KEY (meeting_id)
-REFERENCES public.meetings (meeting_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.attribute_to_evaluate_by_meeting ADD CONSTRAINT meetings_attribute_to_evalute_by_meeting_fk
 FOREIGN KEY (meeting_id)
 REFERENCES public.meetings (meeting_id)
 ON DELETE NO ACTION
@@ -561,9 +546,16 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.permissions_to_evalute_meeting_attribute ADD CONSTRAINT attribute_to_evalute_by_meeting_permissions_to_evalute_meeti732
-FOREIGN KEY (meeting_attribute_to_evaluate_id)
-REFERENCES public.attribute_to_evaluate_by_meeting (meeting_attribute_to_evaluate_id)
+ALTER TABLE public.person_values_header ADD CONSTRAINT meetings_person_values_header_fk
+FOREIGN KEY (meeting_id)
+REFERENCES public.meetings (meeting_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT participant_values_header_participant_values_atrribute_detai199
+FOREIGN KEY (person_values_header_id)
+REFERENCES public.person_values_header (person_values_header_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -571,69 +563,6 @@ NOT DEFERRABLE;
 ALTER TABLE public.meeting_value_headers ADD CONSTRAINT participants_meeting_value_header_fk
 FOREIGN KEY (participant_evaluator_id)
 REFERENCES public.participants (participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.permissions_to_evalute_meeting_attribute ADD CONSTRAINT participants_permissions_to_evalute_meeting_attribute_fk
-FOREIGN KEY (participant_evaluator_id)
-REFERENCES public.participants (participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.attributes_to_evaluate_by_participant ADD CONSTRAINT participants_attributes_to_evaluate_by_participant_fk
-FOREIGN KEY (participant_to_be_evaluate_id)
-REFERENCES public.participants (participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.permissions_to_evalute_participants_attributes ADD CONSTRAINT participants_permissions_to_evalute_participant_attribute_fk
-FOREIGN KEY (evaluator_participant_id)
-REFERENCES public.participants (participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.participant_values_header ADD CONSTRAINT participants_participant_values_header_fk
-FOREIGN KEY (participant_to_evaluate_id)
-REFERENCES public.participants (participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.participant_values_header ADD CONSTRAINT participants_participant_values_header_fk1
-FOREIGN KEY (evaluate_by_participant_id)
-REFERENCES public.participants (participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT participant_values_header_participant_values_atrribute_detai199
-FOREIGN KEY (participant_value_header_id)
-REFERENCES public.participant_values_header (participant_value_header_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.permissions_to_evalute_participants_attributes ADD CONSTRAINT attributes_to_evaluate_by_participant_permissions_to_evalute120
-FOREIGN KEY (attribute_to_evaluate_by_participant_id)
-REFERENCES public.attributes_to_evaluate_by_participant (attribute_to_evaluate_by_participant_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.participant_atrribute_values_details ADD CONSTRAINT permissions_to_evalute_participant_attribute_participant_val115
-FOREIGN KEY (evaluator_participant_by_attribute_id)
-REFERENCES public.permissions_to_evalute_participants_attributes (evaluator_participant_by_attribute_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.meeting_value_details ADD CONSTRAINT permissions_to_evalute_meeting_attribute_meeting_value_detai673
-FOREIGN KEY (participant_with_permissions_to_eval_meeting_attribute_id)
-REFERENCES public.permissions_to_evalute_meeting_attribute (attribute_with_permissions_participant_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
