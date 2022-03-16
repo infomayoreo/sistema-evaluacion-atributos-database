@@ -119,7 +119,7 @@
 <a href="#evaluation_comments">evaluation_comments</a>
 </li>
 <li>
-<a href="#evaluation_type">evaluation_type</a>
+<a href="#evaluation_types">evaluation_types</a>
 </li>
 <li>
 <a href="#global_settings">global_settings</a>
@@ -140,9 +140,6 @@
 <a href="#meetings">meetings</a>
 </li>
 <li>
-<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a>
-</li>
-<li>
 <a href="#participants">participants</a>
 </li>
 <li>
@@ -152,13 +149,16 @@
 <a href="#permissions_by_user">permissions_by_user</a>
 </li>
 <li>
+<a href="#person_extra_evaluations">person_extra_evaluations</a>
+</li>
+<li>
 <a href="#person_proficiency">person_proficiency</a>
 </li>
 <li>
-<a href="#person_values_details">person_values_details</a>
+<a href="#person_value_headers">person_value_headers</a>
 </li>
 <li>
-<a href="#person_values_header">person_values_header</a>
+<a href="#person_values_details">person_values_details</a>
 </li>
 <li>
 <a href="#persons">persons</a>
@@ -550,10 +550,10 @@
 </div>
 </div>
 <div class="tableNameHeading">
-<h1>evaluation_type<a name="evaluation_type"></a>
+<h1>evaluation_types<a name="evaluation_types"></a>
 </h1>
 <h2>
-      (Physical Name: evaluation_type)
+      (Physical Name: evaluation_types)
       </h2>
 </div>
 <div class="table">
@@ -581,7 +581,7 @@
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#person_values_header">person_values_header</a> referencing (evaluation_type_id)</li>
+<a href="#person_value_headers">person_value_headers</a> referencing (evaluation_type_id)</li>
 </ul>
 </div>
 </div>
@@ -601,7 +601,7 @@
 <td class="tdTableDefinition">global_setting_id (PK)</td><td class="tdTableDefinition">global_setting_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 </table>
 <div class="references"></div>
@@ -837,52 +837,7 @@
 <li>
 <a href="#meetings">meetings</a> referencing (meeting_id)</li>
 <li>
-<a href="#person_values_header">person_values_header</a> referencing (meeting_id)</li>
-</ul>
-</div>
-</div>
-<div class="tableNameHeading">
-<h1>participant_evaluation_peariod_headers<a name="participant_evaluation_peariod_headers"></a>
-</h1>
-<h2>
-      (Physical Name: participant_evaluation_peariod_headers)
-      </h2>
-</div>
-<div class="table">
-<table class="tableDefinition" width="100%">
-<tr>
-<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">participant_evaluation_period_id (PK)</td><td class="tdTableDefinition">participant_evaluation_period_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">committee_audio_url</td><td class="tdTableDefinition">committee_audio_url</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">person_to_evaluate_id
-                &nbsp;(<a href="#persons">FK</a>)
-              </td><td class="tdTableDefinition">person_to_evaluate_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">evaluator_user_id
-                &nbsp;(<a href="#users">FK</a>)
-              </td><td class="tdTableDefinition">evaluator_user_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-</table>
-<div class="references">
-<p class="subTitle">References</p>
-<ul>
-<li>
-<a href="#users">users</a> through (evaluator_user_id)</li>
-<li>
-<a href="#persons">persons</a> through (person_to_evaluate_id)</li>
+<a href="#person_value_headers">person_value_headers</a> referencing (meeting_id)</li>
 </ul>
 </div>
 </div>
@@ -910,6 +865,9 @@
 <td class="tdTableDefinition">person_id
                 &nbsp;(<a href="#persons">FK</a>)
               </td><td class="tdTableDefinition">person_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">deleted</td><td class="tdTableDefinition">deleted</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -946,7 +904,7 @@
 <td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">permission_by_role_id (PK)</td><td class="tdTableDefinition">permission_by_role_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">permission_by_level_access_id (PK)</td><td class="tdTableDefinition">permission_by_level_access_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">level_access_id
@@ -1024,6 +982,51 @@
 </div>
 </div>
 <div class="tableNameHeading">
+<h1>person_extra_evaluations<a name="person_extra_evaluations"></a>
+</h1>
+<h2>
+      (Physical Name: person_extra_evaluations)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">person_extra_evaluation_id (PK)</td><td class="tdTableDefinition">person_extra_evaluation_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">committee_audio_url</td><td class="tdTableDefinition">committee_audio_url</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">person_to_evaluate_id
+                &nbsp;(<a href="#persons">FK</a>)
+              </td><td class="tdTableDefinition">person_to_evaluate_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">evaluator_user_id
+                &nbsp;(<a href="#users">FK</a>)
+              </td><td class="tdTableDefinition">evaluator_user_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">References</p>
+<ul>
+<li>
+<a href="#users">users</a> through (evaluator_user_id)</li>
+<li>
+<a href="#persons">persons</a> through (person_to_evaluate_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
 <h1>person_proficiency<a name="person_proficiency"></a>
 </h1>
 <h2>
@@ -1066,10 +1069,10 @@
 </div>
 </div>
 <div class="tableNameHeading">
-<h1>person_values_details<a name="person_values_details"></a>
+<h1>person_value_headers<a name="person_value_headers"></a>
 </h1>
 <h2>
-      (Physical Name: person_values_details)
+      (Physical Name: person_value_headers)
       </h2>
 </div>
 <div class="table">
@@ -1078,52 +1081,7 @@
 <td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">person_value_detail_id (PK)</td><td class="tdTableDefinition">person_value_detail_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">person_values_header_id
-                &nbsp;(<a href="#person_values_header">FK</a>)
-              </td><td class="tdTableDefinition">person_values_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">value_range_id
-                &nbsp;(<a href="#attribute_ranges">FK</a>)
-              </td><td class="tdTableDefinition">value_range_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-</table>
-<div class="references">
-<p class="subTitle">References</p>
-<ul>
-<li>
-<a href="#attribute_ranges">attribute_ranges</a> through (value_range_id)</li>
-<li>
-<a href="#person_values_header">person_values_header</a> through (person_values_header_id)</li>
-</ul>
-</div>
-</div>
-<div class="tableNameHeading">
-<h1>person_values_header<a name="person_values_header"></a>
-</h1>
-<h2>
-      (Physical Name: person_values_header)
-      </h2>
-</div>
-<div class="table">
-<table class="tableDefinition" width="100%">
-<tr>
-<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">person_values_header_id (PK)</td><td class="tdTableDefinition">person_values_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">person_value_header_id (PK)</td><td class="tdTableDefinition">person_value_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">general_feedback</td><td class="tdTableDefinition">general_feedback</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
@@ -1140,7 +1098,7 @@
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">evaluation_type_id
-                &nbsp;(<a href="#evaluation_type">FK</a>)
+                &nbsp;(<a href="#evaluation_types">FK</a>)
               </td><td class="tdTableDefinition">evaluation_type_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
@@ -1165,12 +1123,57 @@
 <li>
 <a href="#persons">persons</a> through (person_to_evaluate_id)</li>
 <li>
-<a href="#evaluation_type">evaluation_type</a> through (evaluation_type_id)</li>
+<a href="#evaluation_types">evaluation_types</a> through (evaluation_type_id)</li>
 </ul>
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#person_values_details">person_values_details</a> referencing (person_values_header_id)</li>
+<a href="#person_values_details">person_values_details</a> referencing (person_value_header_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
+<h1>person_values_details<a name="person_values_details"></a>
+</h1>
+<h2>
+      (Physical Name: person_values_details)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">person_value_detail_id (PK)</td><td class="tdTableDefinition">person_value_detail_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">person_value_header_id
+                &nbsp;(<a href="#person_value_headers">FK</a>)
+              </td><td class="tdTableDefinition">person_value_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">value_range_id
+                &nbsp;(<a href="#attribute_ranges">FK</a>)
+              </td><td class="tdTableDefinition">value_range_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">attribute_feedbak</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">References</p>
+<ul>
+<li>
+<a href="#attribute_ranges">attribute_ranges</a> through (value_range_id)</li>
+<li>
+<a href="#person_value_headers">person_value_headers</a> through (person_value_header_id)</li>
 </ul>
 </div>
 </div>
@@ -1222,9 +1225,9 @@
 <li>
 <a href="#participants">participants</a> referencing (person_id)</li>
 <li>
-<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> referencing (person_id)</li>
+<a href="#person_extra_evaluations">person_extra_evaluations</a> referencing (person_id)</li>
 <li>
-<a href="#person_values_header">person_values_header</a> referencing (person_id)</li>
+<a href="#person_value_headers">person_value_headers</a> referencing (person_id)</li>
 <li>
 <a href="#evaluation_comments">evaluation_comments</a> referencing (person_id)</li>
 <li>
@@ -1530,11 +1533,11 @@
 <li>
 <a href="#audit_users">audit_users</a> referencing (user_id)</li>
 <li>
-<a href="#person_values_header">person_values_header</a> referencing (user_id)</li>
+<a href="#person_value_headers">person_value_headers</a> referencing (user_id)</li>
 <li>
 <a href="#evaluation_comments">evaluation_comments</a> referencing (user_id)</li>
 <li>
-<a href="#participant_evaluation_peariod_headers">participant_evaluation_peariod_headers</a> referencing (user_id)</li>
+<a href="#person_extra_evaluations">person_extra_evaluations</a> referencing (user_id)</li>
 </ul>
 </div>
 </div>

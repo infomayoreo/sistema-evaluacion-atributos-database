@@ -57,22 +57,22 @@ CREATE UNIQUE INDEX proficiencies_ranges_idx
  ON public.proficiencies_ranges
  ( proficiency_value_id, proficiency_id );
 
-CREATE SEQUENCE public.evaluation_type_evaluation_type_id_seq;
+CREATE SEQUENCE public.evaluation_types_evaluation_type_id_seq;
 
-CREATE TABLE public.evaluation_type (
-                evaluation_type_id INTEGER NOT NULL DEFAULT nextval('public.evaluation_type_evaluation_type_id_seq'),
+CREATE TABLE public.evaluation_types (
+                evaluation_type_id INTEGER NOT NULL DEFAULT nextval('public.evaluation_types_evaluation_type_id_seq'),
                 name VARCHAR(256) NOT NULL,
                 description VARCHAR,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT evaluation_type_pk PRIMARY KEY (evaluation_type_id)
+                CONSTRAINT evaluation_types_pk PRIMARY KEY (evaluation_type_id)
 );
 
 
-ALTER SEQUENCE public.evaluation_type_evaluation_type_id_seq OWNED BY public.evaluation_type.evaluation_type_id;
+ALTER SEQUENCE public.evaluation_types_evaluation_type_id_seq OWNED BY public.evaluation_types.evaluation_type_id;
 
 CREATE UNIQUE INDEX evaluation_type_idx
- ON public.evaluation_type
+ ON public.evaluation_types
  ( name );
 
 CREATE SEQUENCE public.profile_types_profile_type_id_seq;
@@ -125,7 +125,7 @@ CREATE SEQUENCE public.global_settings_global_setting_id_seq;
 
 CREATE TABLE public.global_settings (
                 global_setting_id INTEGER NOT NULL DEFAULT nextval('public.global_settings_global_setting_id_seq'),
-                name VARCHAR NOT NULL,
+                name VARCHAR(100) NOT NULL,
                 CONSTRAINT global_settings_pk PRIMARY KEY (global_setting_id)
 );
 
@@ -266,17 +266,17 @@ CREATE UNIQUE INDEX level_access_idx
 CREATE SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq;
 
 CREATE TABLE public.permissions_by_level_access (
-                permission_by_role_id INTEGER NOT NULL DEFAULT nextval('public.permissions_by_level_access_permission_by_role_id_seq'),
+                permission_by_level_access_id INTEGER NOT NULL DEFAULT nextval('public.permissions_by_level_access_permission_by_role_id_seq'),
                 level_access_id INTEGER NOT NULL,
                 system_option_id INTEGER NOT NULL,
                 allow_permission BOOLEAN NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
-                CONSTRAINT permissions_by_level_access_pk PRIMARY KEY (permission_by_role_id)
+                CONSTRAINT permissions_by_level_access_pk PRIMARY KEY (permission_by_level_access_id)
 );
 
 
-ALTER SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq OWNED BY public.permissions_by_level_access.permission_by_role_id;
+ALTER SEQUENCE public.permissions_by_level_access_permission_by_role_id_seq OWNED BY public.permissions_by_level_access.permission_by_level_access_id;
 
 CREATE UNIQUE INDEX permissions_by_level_access_idx
  ON public.permissions_by_level_access
@@ -367,20 +367,20 @@ CREATE TABLE public.evaluation_comments (
 
 ALTER SEQUENCE public.evaluation_comments_evaluation_comment_id_seq OWNED BY public.evaluation_comments.evaluation_comment_id;
 
-CREATE SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849;
+CREATE SEQUENCE public.person_extra_evaluations_participant_evaluation_period_id_seq;
 
-CREATE TABLE public.participant_evaluation_peariod_headers (
-                participant_evaluation_period_id INTEGER NOT NULL DEFAULT nextval('public.participant_evaluation_peariod_headers_participant_evaluatio849'),
+CREATE TABLE public.person_extra_evaluations (
+                person_extra_evaluation_id INTEGER NOT NULL DEFAULT nextval('public.person_extra_evaluations_participant_evaluation_period_id_seq'),
                 committee_audio_url VARCHAR,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 person_to_evaluate_id INTEGER NOT NULL,
                 evaluator_user_id INTEGER NOT NULL,
-                CONSTRAINT participant_evaluation_peariod_headers_pk PRIMARY KEY (participant_evaluation_period_id)
+                CONSTRAINT person_extra_evaluations_pk PRIMARY KEY (person_extra_evaluation_id)
 );
 
 
-ALTER SEQUENCE public.participant_evaluation_peariod_headers_participant_evaluatio849 OWNED BY public.participant_evaluation_peariod_headers.participant_evaluation_period_id;
+ALTER SEQUENCE public.person_extra_evaluations_participant_evaluation_period_id_seq OWNED BY public.person_extra_evaluations.person_extra_evaluation_id;
 
 CREATE SEQUENCE public.meetings_meeting_id_seq;
 
@@ -403,8 +403,8 @@ ALTER SEQUENCE public.meetings_meeting_id_seq OWNED BY public.meetings.meeting_i
 
 CREATE SEQUENCE public.person_values_header_participant_value_header_id_seq;
 
-CREATE TABLE public.person_values_header (
-                person_values_header_id INTEGER NOT NULL DEFAULT nextval('public.person_values_header_participant_value_header_id_seq'),
+CREATE TABLE public.person_value_headers (
+                person_value_header_id INTEGER NOT NULL DEFAULT nextval('public.person_values_header_participant_value_header_id_seq'),
                 general_feedback VARCHAR,
                 evaluator_user_id INTEGER NOT NULL,
                 person_to_evaluate_id INTEGER NOT NULL,
@@ -412,17 +412,17 @@ CREATE TABLE public.person_values_header (
                 meeting_id INTEGER,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT person_values_header_pk PRIMARY KEY (person_values_header_id)
+                CONSTRAINT person_value_headers_pk PRIMARY KEY (person_value_header_id)
 );
 
 
-ALTER SEQUENCE public.person_values_header_participant_value_header_id_seq OWNED BY public.person_values_header.person_values_header_id;
+ALTER SEQUENCE public.person_values_header_participant_value_header_id_seq OWNED BY public.person_value_headers.person_value_header_id;
 
 CREATE SEQUENCE public.person_values_details_participant_value_detail_id_seq;
 
 CREATE TABLE public.person_values_details (
                 person_value_detail_id INTEGER NOT NULL DEFAULT nextval('public.person_values_details_participant_value_detail_id_seq'),
-                person_values_header_id INTEGER NOT NULL,
+                person_value_header_id INTEGER NOT NULL,
                 value_range_id INTEGER NOT NULL,
                 attribute_feedbak VARCHAR,
                 create_at TIMESTAMP NOT NULL,
@@ -439,6 +439,7 @@ CREATE TABLE public.participants (
                 participant_id INTEGER NOT NULL DEFAULT nextval('public.participants_participant_id_seq'),
                 meeting_id INTEGER NOT NULL,
                 person_id INTEGER NOT NULL,
+                deleted BOOLEAN DEFAULT false NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT participants_pk PRIMARY KEY (participant_id)
@@ -508,9 +509,9 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.person_values_header ADD CONSTRAINT evaluation_type_person_values_header_fk
+ALTER TABLE public.person_value_headers ADD CONSTRAINT evaluation_type_person_values_header_fk
 FOREIGN KEY (evaluation_type_id)
-REFERENCES public.evaluation_type (evaluation_type_id)
+REFERENCES public.evaluation_types (evaluation_type_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -641,7 +642,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.person_values_header ADD CONSTRAINT users_person_values_header_fk
+ALTER TABLE public.person_value_headers ADD CONSTRAINT users_person_values_header_fk
 FOREIGN KEY (evaluator_user_id)
 REFERENCES public.users (user_id)
 ON DELETE NO ACTION
@@ -655,7 +656,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.participant_evaluation_peariod_headers ADD CONSTRAINT users_participant_evaluation_peariod_headers_fk
+ALTER TABLE public.person_extra_evaluations ADD CONSTRAINT users_participant_evaluation_peariod_headers_fk
 FOREIGN KEY (evaluator_user_id)
 REFERENCES public.users (user_id)
 ON DELETE NO ACTION
@@ -669,14 +670,14 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.participant_evaluation_peariod_headers ADD CONSTRAINT persons_audit_participants_header_fk
+ALTER TABLE public.person_extra_evaluations ADD CONSTRAINT persons_audit_participants_header_fk
 FOREIGN KEY (person_to_evaluate_id)
 REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.person_values_header ADD CONSTRAINT persons_person_values_header_fk
+ALTER TABLE public.person_value_headers ADD CONSTRAINT persons_person_values_header_fk
 FOREIGN KEY (person_to_evaluate_id)
 REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
@@ -711,7 +712,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.person_values_header ADD CONSTRAINT meetings_person_values_header_fk
+ALTER TABLE public.person_value_headers ADD CONSTRAINT meetings_person_values_header_fk
 FOREIGN KEY (meeting_id)
 REFERENCES public.meetings (meeting_id)
 ON DELETE NO ACTION
@@ -719,8 +720,8 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.person_values_details ADD CONSTRAINT participant_values_header_participant_values_atrribute_detai199
-FOREIGN KEY (person_values_header_id)
-REFERENCES public.person_values_header (person_values_header_id)
+FOREIGN KEY (person_value_header_id)
+REFERENCES public.person_value_headers (person_value_header_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
