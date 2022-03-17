@@ -301,24 +301,35 @@ CREATE UNIQUE INDEX users_idx
  ON public.users
  ( email );
 
-CREATE SEQUENCE public.audit_users_audit_user_id_seq;
+CREATE SEQUENCE public.audit_user_headers_audit_user_id_seq;
 
-CREATE TABLE public.audit_users (
-                audit_user_id INTEGER NOT NULL DEFAULT nextval('public.audit_users_audit_user_id_seq'),
+CREATE TABLE public.audit_user_headers (
+                audit_user_header_id INTEGER NOT NULL DEFAULT nextval('public.audit_user_headers_audit_user_id_seq'),
                 system_auditable_process_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
-                at_table VARCHAR(100),
-                at_column VARCHAR(100),
-                old_value VARCHAR(100),
-                new_value VARCHAR(100),
-                data_type VARCHAR(100),
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT audit_users_pk PRIMARY KEY (audit_user_id)
+                CONSTRAINT audit_user_headers_pk PRIMARY KEY (audit_user_header_id)
 );
 
 
-ALTER SEQUENCE public.audit_users_audit_user_id_seq OWNED BY public.audit_users.audit_user_id;
+ALTER SEQUENCE public.audit_user_headers_audit_user_id_seq OWNED BY public.audit_user_headers.audit_user_header_id;
+
+CREATE SEQUENCE public.audit_user_details_audit_user_detail_id_seq;
+
+CREATE TABLE public.audit_user_details (
+                audit_user_detail_id INTEGER NOT NULL DEFAULT nextval('public.audit_user_details_audit_user_detail_id_seq'),
+                audit_user_header_id INTEGER NOT NULL,
+                at_table VARCHAR(100) NOT NULL,
+                at_column VARCHAR(100) NOT NULL,
+                old_value VARCHAR(100) NOT NULL,
+                new_value VARCHAR(100) NOT NULL,
+                data_type VARCHAR(100) NOT NULL,
+                CONSTRAINT audit_user_details_pk PRIMARY KEY (audit_user_detail_id)
+);
+
+
+ALTER SEQUENCE public.audit_user_details_audit_user_detail_id_seq OWNED BY public.audit_user_details.audit_user_detail_id;
 
 CREATE SEQUENCE public.persons_person_id_seq;
 
@@ -523,7 +534,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.audit_users ADD CONSTRAINT system_operations_audit_users_fk
+ALTER TABLE public.audit_user_headers ADD CONSTRAINT system_operations_audit_users_fk
 FOREIGN KEY (system_auditable_process_id)
 REFERENCES public.system_auditable_process (system_auditable_process_id)
 ON DELETE NO ACTION
@@ -635,7 +646,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.audit_users ADD CONSTRAINT users_audit_users_fk
+ALTER TABLE public.audit_user_headers ADD CONSTRAINT users_audit_users_fk
 FOREIGN KEY (user_id)
 REFERENCES public.users (user_id)
 ON DELETE NO ACTION
@@ -659,6 +670,13 @@ NOT DEFERRABLE;
 ALTER TABLE public.person_extra_evaluations ADD CONSTRAINT users_participant_evaluation_peariod_headers_fk
 FOREIGN KEY (evaluator_user_id)
 REFERENCES public.users (user_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.audit_user_details ADD CONSTRAINT audit_users_audit_user_details_fk
+FOREIGN KEY (audit_user_header_id)
+REFERENCES public.audit_user_headers (audit_user_header_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;

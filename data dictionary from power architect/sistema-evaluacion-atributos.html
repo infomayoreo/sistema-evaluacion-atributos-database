@@ -110,7 +110,10 @@
 <a href="#attributes">attributes</a>
 </li>
 <li>
-<a href="#audit_users">audit_users</a>
+<a href="#audit_user_details">audit_user_details</a>
+</li>
+<li>
+<a href="#audit_user_headers">audit_user_headers</a>
 </li>
 <li>
 <a href="#data_source">data_source</a>
@@ -409,10 +412,10 @@
 </div>
 </div>
 <div class="tableNameHeading">
-<h1>audit_users<a name="audit_users"></a>
+<h1>audit_user_details<a name="audit_user_details"></a>
 </h1>
 <h2>
-      (Physical Name: audit_users)
+      (Physical Name: audit_user_details)
       </h2>
 </div>
 <div class="table">
@@ -421,7 +424,51 @@
 <td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">audit_user_id (PK)</td><td class="tdTableDefinition">audit_user_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+<td class="tdTableDefinition">audit_user_detail_id (PK)</td><td class="tdTableDefinition">audit_user_detail_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">audit_user_header_id
+                &nbsp;(<a href="#audit_user_headers">FK</a>)
+              </td><td class="tdTableDefinition">audit_user_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">at_table</td><td class="tdTableDefinition">at_table</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">at_column</td><td class="tdTableDefinition">at_column</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">old_value</td><td class="tdTableDefinition">old_value</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">new_value</td><td class="tdTableDefinition">new_value</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">data_type</td><td class="tdTableDefinition">data_type</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">References</p>
+<ul>
+<li>
+<a href="#audit_user_headers">audit_user_headers</a> through (audit_user_header_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
+<h1>audit_user_headers<a name="audit_user_headers"></a>
+</h1>
+<h2>
+      (Physical Name: audit_user_headers)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">audit_user_header_id (PK)</td><td class="tdTableDefinition">audit_user_header_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">system_auditable_process_id
@@ -432,21 +479,6 @@
 <td class="tdTableDefinition">user_id
                 &nbsp;(<a href="#users">FK</a>)
               </td><td class="tdTableDefinition">user_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">at_table</td><td class="tdTableDefinition">at_table</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">at_column</td><td class="tdTableDefinition">at_column</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">old_value</td><td class="tdTableDefinition">old_value</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">new_value</td><td class="tdTableDefinition">new_value</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">data_type</td><td class="tdTableDefinition">data_type</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
@@ -462,6 +494,11 @@
 <a href="#users">users</a> through (user_id)</li>
 <li>
 <a href="#system_auditable_process">system_auditable_process</a> through (system_auditable_process_id)</li>
+</ul>
+<p class="subTitle">Referenced By</p>
+<ul>
+<li>
+<a href="#audit_user_details">audit_user_details</a> referencing (audit_user_header_id)</li>
 </ul>
 </div>
 </div>
@@ -1438,7 +1475,7 @@
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#audit_users">audit_users</a> referencing (system_auditable_process_id)</li>
+<a href="#audit_user_headers">audit_user_headers</a> referencing (system_auditable_process_id)</li>
 </ul>
 </div>
 </div>
@@ -1531,7 +1568,7 @@
 <li>
 <a href="#persons">persons</a> referencing (user_id)</li>
 <li>
-<a href="#audit_users">audit_users</a> referencing (user_id)</li>
+<a href="#audit_user_headers">audit_user_headers</a> referencing (user_id)</li>
 <li>
 <a href="#person_value_headers">person_value_headers</a> referencing (user_id)</li>
 <li>
