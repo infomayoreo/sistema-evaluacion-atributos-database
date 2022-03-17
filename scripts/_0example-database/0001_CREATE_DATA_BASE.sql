@@ -180,24 +180,24 @@ CREATE UNIQUE INDEX attribute_type_idx
  ON public.attribute_type
  ( name );
 
-CREATE SEQUENCE public.attribute_attribute_id_seq;
+CREATE SEQUENCE public.attributes_attribute_id_seq;
 
-CREATE TABLE public.attribute (
-                attribute_id VARCHAR NOT NULL DEFAULT nextval('public.attribute_attribute_id_seq'),
+CREATE TABLE public.attributes (
+                attribute_id VARCHAR NOT NULL DEFAULT nextval('public.attributes_attribute_id_seq'),
                 attribute_type_id INTEGER NOT NULL,
                 name VARCHAR(256) NOT NULL,
                 description NVARCHAR,
                 activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
-                CONSTRAINT attribute_pk PRIMARY KEY (attribute_id)
+                CONSTRAINT attributes_pk PRIMARY KEY (attribute_id)
 );
 
 
-ALTER SEQUENCE public.attribute_attribute_id_seq OWNED BY public.attribute.attribute_id;
+ALTER SEQUENCE public.attributes_attribute_id_seq OWNED BY public.attributes.attribute_id;
 
 CREATE INDEX attribute_idx
- ON public.attribute
+ ON public.attributes
  ( attribute_type_id, name );
 
 CREATE TABLE public.attribute_profiles (
@@ -551,7 +551,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.attribute ADD CONSTRAINT attribute_type_attribute_fk
+ALTER TABLE public.attributes ADD CONSTRAINT attribute_type_attribute_fk
 FOREIGN KEY (attribute_type_id)
 REFERENCES public.attribute_type (attribute_type_id)
 ON DELETE NO ACTION
@@ -560,14 +560,14 @@ NOT DEFERRABLE;
 
 ALTER TABLE public.attribute_ranges ADD CONSTRAINT attribute_attribute_ranges_fk
 FOREIGN KEY (attribute_id)
-REFERENCES public.attribute (attribute_id)
+REFERENCES public.attributes (attribute_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.attribute_profiles ADD CONSTRAINT attribute_attribute_profiles_fk
 FOREIGN KEY (attribute_id)
-REFERENCES public.attribute (attribute_id)
+REFERENCES public.attributes (attribute_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;

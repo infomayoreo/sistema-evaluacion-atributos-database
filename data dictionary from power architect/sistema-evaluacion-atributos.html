@@ -95,9 +95,6 @@
 <h3>List of tables</h3>
 <ul>
 <li>
-<a href="#attribute">attribute</a>
-</li>
-<li>
 <a href="#attribute_profiles">attribute_profiles</a>
 </li>
 <li>
@@ -108,6 +105,9 @@
 </li>
 <li>
 <a href="#attribute_values">attribute_values</a>
+</li>
+<li>
+<a href="#attributes">attributes</a>
 </li>
 <li>
 <a href="#audit_users">audit_users</a>
@@ -186,57 +186,6 @@
 </li>
 </ul>
 <div class="tableNameHeading">
-<h1>attribute<a name="attribute"></a>
-</h1>
-<h2>
-      (Physical Name: attribute)
-      </h2>
-</div>
-<div class="table">
-<table class="tableDefinition" width="100%">
-<tr>
-<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">attribute_id (PK)</td><td class="tdTableDefinition">attribute_id</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">attribute_type_id
-                &nbsp;(<a href="#attribute_type">FK</a>)
-              </td><td class="tdTableDefinition">attribute_type_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(256)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">NVARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-<tr valign="top">
-<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
-</tr>
-</table>
-<div class="references">
-<p class="subTitle">References</p>
-<ul>
-<li>
-<a href="#attribute_type">attribute_type</a> through (attribute_type_id)</li>
-</ul>
-<p class="subTitle">Referenced By</p>
-<ul>
-<li>
-<a href="#attribute_ranges">attribute_ranges</a> referencing (attribute_id)</li>
-<li>
-<a href="#attribute_profiles">attribute_profiles</a> referencing (attribute_id)</li>
-</ul>
-</div>
-</div>
-<div class="tableNameHeading">
 <h1>attribute_profiles<a name="attribute_profiles"></a>
 </h1>
 <h2>
@@ -258,7 +207,7 @@
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">attribute_id
-                &nbsp;(<a href="#attribute">FK</a>)
+                &nbsp;(<a href="#attributes">FK</a>)
               </td><td class="tdTableDefinition">attribute_id</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
@@ -272,7 +221,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#attribute">attribute</a> through (attribute_id)</li>
+<a href="#attributes">attributes</a> through (attribute_id)</li>
 <li>
 <a href="#profile_types">profile_types</a> through (profile_type_id)</li>
 </ul>
@@ -295,7 +244,7 @@
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">attribute_id
-                &nbsp;(<a href="#attribute">FK</a>)
+                &nbsp;(<a href="#attributes">FK</a>)
               </td><td class="tdTableDefinition">attribute_id</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
@@ -317,7 +266,7 @@
 <p class="subTitle">References</p>
 <ul>
 <li>
-<a href="#attribute">attribute</a> through (attribute_id)</li>
+<a href="#attributes">attributes</a> through (attribute_id)</li>
 <li>
 <a href="#attribute_values">attribute_values</a> through (value_id)</li>
 </ul>
@@ -362,7 +311,7 @@
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#attribute">attribute</a> referencing (attribute_type_id)</li>
+<a href="#attributes">attributes</a> referencing (attribute_type_id)</li>
 </ul>
 </div>
 </div>
@@ -405,6 +354,57 @@
 <ul>
 <li>
 <a href="#attribute_ranges">attribute_ranges</a> referencing (value_id)</li>
+</ul>
+</div>
+</div>
+<div class="tableNameHeading">
+<h1>attributes<a name="attributes"></a>
+</h1>
+<h2>
+      (Physical Name: attributes)
+      </h2>
+</div>
+<div class="table">
+<table class="tableDefinition" width="100%">
+<tr>
+<td class="tdTableHeading tdLogicalColName">Logical Column Name</td><td class="tdTableHeading tdPhysicalColName">Physical Column Name</td><td class="tdTableHeading tdDataType">Type</td><td class="tdTableHeading tdPkFlag">PK</td><td class="tdTableHeading tdNullFlag">Nullable</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">attribute_id (PK)</td><td class="tdTableDefinition">attribute_id</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap>PK</td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">attribute_type_id
+                &nbsp;(<a href="#attribute_type">FK</a>)
+              </td><td class="tdTableDefinition">attribute_type_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(256)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">NVARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+</table>
+<div class="references">
+<p class="subTitle">References</p>
+<ul>
+<li>
+<a href="#attribute_type">attribute_type</a> through (attribute_type_id)</li>
+</ul>
+<p class="subTitle">Referenced By</p>
+<ul>
+<li>
+<a href="#attribute_ranges">attribute_ranges</a> referencing (attribute_id)</li>
+<li>
+<a href="#attribute_profiles">attribute_profiles</a> referencing (attribute_id)</li>
 </ul>
 </div>
 </div>
