@@ -155,7 +155,7 @@
 <a href="#person_extra_evaluations">person_extra_evaluations</a>
 </li>
 <li>
-<a href="#person_proficiency">person_proficiency</a>
+<a href="#person_proficiencies">person_proficiencies</a>
 </li>
 <li>
 <a href="#person_value_headers">person_value_headers</a>
@@ -570,6 +570,9 @@
               </td><td class="tdTableDefinition">evaluator_user_id</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
+<td class="tdTableDefinition">comment</td><td class="tdTableDefinition">comment</td><td class="tdTableDefinition">VARCHAR(0)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
 <td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
@@ -639,6 +642,21 @@
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">name</td><td class="tdTableDefinition">name</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">data_type</td><td class="tdTableDefinition">data_type</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">current_value</td><td class="tdTableDefinition">current_value</td><td class="tdTableDefinition">VARCHAR(100)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">description</td><td class="tdTableDefinition">description</td><td class="tdTableDefinition">VARCHAR(256)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">create_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
+</tr>
+<tr valign="top">
+<td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">update_at</td><td class="tdTableDefinition">TIMESTAMP</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 </table>
 <div class="references"></div>
@@ -1064,10 +1082,10 @@
 </div>
 </div>
 <div class="tableNameHeading">
-<h1>person_proficiency<a name="person_proficiency"></a>
+<h1>person_proficiencies<a name="person_proficiencies"></a>
 </h1>
 <h2>
-      (Physical Name: person_proficiency)
+      (Physical Name: person_proficiencies)
       </h2>
 </div>
 <div class="table">
@@ -1268,7 +1286,7 @@
 <li>
 <a href="#evaluation_comments">evaluation_comments</a> referencing (person_id)</li>
 <li>
-<a href="#person_proficiency">person_proficiency</a> referencing (person_id)</li>
+<a href="#person_proficiencies">person_proficiencies</a> referencing (person_id)</li>
 </ul>
 </div>
 </div>
@@ -1354,7 +1372,7 @@
 <p class="subTitle">Referenced By</p>
 <ul>
 <li>
-<a href="#person_proficiency">person_proficiency</a> referencing (proficiency_range_id)</li>
+<a href="#person_proficiencies">person_proficiencies</a> referencing (proficiency_range_id)</li>
 </ul>
 </div>
 </div>
@@ -1383,7 +1401,7 @@
 <td class="tdTableDefinition">numeric_value</td><td class="tdTableDefinition">numeric_value</td><td class="tdTableDefinition">INTEGER</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>
 </tr>
 <tr valign="top">
-<td class="tdTableDefinition">color</td><td class="tdTableDefinition">color</td><td class="tdTableDefinition">VARCHAR(10)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
+<td class="tdTableDefinition">color</td><td class="tdTableDefinition">color</td><td class="tdTableDefinition">VARCHAR(8)</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap></td>
 </tr>
 <tr valign="top">
 <td class="tdTableDefinition">activate</td><td class="tdTableDefinition">activate</td><td class="tdTableDefinition">BOOLEAN</td><td class="tdTableDefinition" nowrap></td><td class="tdTableDefinition" nowrap>NOT NULL</td>

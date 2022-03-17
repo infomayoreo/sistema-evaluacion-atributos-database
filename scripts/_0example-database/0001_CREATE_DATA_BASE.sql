@@ -6,7 +6,7 @@ CREATE TABLE public.profiencies_values (
                 name VARCHAR(100) NOT NULL,
                 description VARCHAR,
                 numeric_value INTEGER NOT NULL,
-                color VARCHAR(10),
+                color VARCHAR(8),
                 activate BOOLEAN DEFAULT true NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
@@ -126,11 +126,20 @@ CREATE SEQUENCE public.global_settings_global_setting_id_seq;
 CREATE TABLE public.global_settings (
                 global_setting_id INTEGER NOT NULL DEFAULT nextval('public.global_settings_global_setting_id_seq'),
                 name VARCHAR(100) NOT NULL,
+                data_type VARCHAR(100) NOT NULL,
+                current_value VARCHAR(100),
+                description VARCHAR(256),
+                create_at TIMESTAMP NOT NULL,
+                update_at TIMESTAMP NOT NULL,
                 CONSTRAINT global_settings_pk PRIMARY KEY (global_setting_id)
 );
 
 
 ALTER SEQUENCE public.global_settings_global_setting_id_seq OWNED BY public.global_settings.global_setting_id;
+
+CREATE UNIQUE INDEX global_settings_idx
+ ON public.global_settings
+ ( name );
 
 CREATE TABLE public.meeting_platforms (
                 platform_id INTEGER NOT NULL,
@@ -146,8 +155,10 @@ CREATE UNIQUE INDEX meeting_platforms_idx
  ON public.meeting_platforms
  ( name );
 
+CREATE SEQUENCE public.attribute_values_value_id_seq;
+
 CREATE TABLE public.attribute_values (
-                value_id INTEGER NOT NULL,
+                value_id INTEGER NOT NULL DEFAULT nextval('public.attribute_values_value_id_seq'),
                 name VARCHAR(256) NOT NULL,
                 numeric_value INTEGER NOT NULL,
                 description NVARCHAR,
@@ -157,6 +168,8 @@ CREATE TABLE public.attribute_values (
                 CONSTRAINT attribute_values_pk PRIMARY KEY (value_id)
 );
 
+
+ALTER SEQUENCE public.attribute_values_value_id_seq OWNED BY public.attribute_values.value_id;
 
 CREATE UNIQUE INDEX attribute_values_idx
  ON public.attribute_values
@@ -350,19 +363,19 @@ CREATE UNIQUE INDEX persons_idx
  ON public.persons
  ( user_id );
 
-CREATE SEQUENCE public.person_proficiency_person_proficiency_id_seq;
+CREATE SEQUENCE public.person_proficiencies_person_proficiency_id_seq;
 
-CREATE TABLE public.person_proficiency (
-                person_proficiency_id INTEGER NOT NULL DEFAULT nextval('public.person_proficiency_person_proficiency_id_seq'),
+CREATE TABLE public.person_proficiencies (
+                person_proficiency_id INTEGER NOT NULL DEFAULT nextval('public.person_proficiencies_person_proficiency_id_seq'),
                 person_id INTEGER NOT NULL,
                 proficiency_range_id INTEGER NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 create_at TIMESTAMP NOT NULL,
-                CONSTRAINT person_proficiency_pk PRIMARY KEY (person_proficiency_id)
+                CONSTRAINT person_proficiencies_pk PRIMARY KEY (person_proficiency_id)
 );
 
 
-ALTER SEQUENCE public.person_proficiency_person_proficiency_id_seq OWNED BY public.person_proficiency.person_proficiency_id;
+ALTER SEQUENCE public.person_proficiencies_person_proficiency_id_seq OWNED BY public.person_proficiencies.person_proficiency_id;
 
 CREATE SEQUENCE public.evaluation_comments_evaluation_comment_id_seq;
 
@@ -370,6 +383,7 @@ CREATE TABLE public.evaluation_comments (
                 evaluation_comment_id INTEGER NOT NULL DEFAULT nextval('public.evaluation_comments_evaluation_comment_id_seq'),
                 person_to_evaluate_id INTEGER NOT NULL,
                 evaluator_user_id INTEGER NOT NULL,
+                comment VARCHAR NOT NULL,
                 create_at TIMESTAMP NOT NULL,
                 update_at TIMESTAMP NOT NULL,
                 CONSTRAINT evaluation_comments_pk PRIMARY KEY (evaluation_comment_id)
@@ -513,7 +527,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.person_proficiency ADD CONSTRAINT proficiencies_ranges_person_proficiency_fk
+ALTER TABLE public.person_proficiencies ADD CONSTRAINT proficiencies_ranges_person_proficiency_fk
 FOREIGN KEY (proficiency_range_id)
 REFERENCES public.proficiencies_ranges (proficiency_range_id)
 ON DELETE NO ACTION
@@ -709,7 +723,7 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.person_proficiency ADD CONSTRAINT persons_person_proficiency_fk
+ALTER TABLE public.person_proficiencies ADD CONSTRAINT persons_person_proficiency_fk
 FOREIGN KEY (person_id)
 REFERENCES public.persons (person_id)
 ON DELETE NO ACTION
